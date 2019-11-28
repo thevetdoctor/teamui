@@ -34,10 +34,25 @@ input {
   border-radius: 0.5em;
 }
 
-input[type="submit"] {
+/* input[type="submit"] {
   background-color: #009900;
   color: #fff;
   font-weight: bold;
+} */
+.submit {
+  background-color: #009900;
+  color: #fff;
+  font-weight: bold;
+}
+
+.inactive {
+  background-color: #006999;
+  color: rgb(255, 255, 255);
+  font-weight: bold;
+}
+
+input.empty::placeholder {
+  color: #ff0055;
 }
 
 .form-selector {
