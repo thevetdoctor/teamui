@@ -68,7 +68,7 @@ render() {
         {/* <a href='/api/v1/docs'>Documentation</a> */}
         <h3>New User Account</h3>
         Please fill in user details
-
+ 
         <form className='form-selector' onSubmit={this.handleSubmit}>
           <input type='text' name='firstName' placeholder='Enter Firstname' onChange={this.handleChange} />
           <input type='text' name='lastName' placeholder='Enter Lastname' onChange={this.handleChange} />
