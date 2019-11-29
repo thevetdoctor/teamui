@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import '../css/App.css';
 
-class App extends Component {
+// const errorMessage = useSelector(state => state.errorMessage);
+
+class CreateUser extends Component {
 
   constructor(props) {
     super(props);
@@ -24,6 +27,7 @@ class App extends Component {
 
 handleSubmit (e) {
   e.preventDefault();
+  // console.log(this.state);
   let inputClass = e.target.children[9].classList;
   console.log(inputClass.toggle('inactive'));
 }
@@ -36,7 +40,7 @@ handleChange({target}) {
   if (keyArray.indexOf(name) >= 0) {
   this.setState(prev => ({[name]: ''}));
   }
-  console.log('name =>', name, ': value =>', val);
+  // console.log('name =>', name, ': value =>', val);
 
   if (name === 'undefined' || name === undefined) {
     console.log('name is undefined', 'target =>', target.parentNode, 'val =>', val);
@@ -64,17 +68,18 @@ render() {
 
   return (
     <div className="App">
-        {/* <a href='/'>Back</a> */}
-        {/* <a href='/api/v1/docs'>Documentation</a> */}
+        <Link to='/' className='links'>Back to Teamwork</Link>
         <h3>New User Account</h3>
         Please fill in user details
+ 
+        {/* <div>{errorMessage ? <span className='error'>{errorMessage} </span> : <span></span>}</div> */}
  
         <form className='form-selector' onSubmit={this.handleSubmit}>
           <input type='text' name='firstName' placeholder='Enter Firstname' onChange={this.handleChange} />
           <input type='text' name='lastName' placeholder='Enter Lastname' onChange={this.handleChange} />
           <input type='text' name='email' placeholder='Put in Email' onChange={this.handleChange} />
-          <input type='password' name='password1' placeholder='Enter Password' onChange={this.handleChange} />
-          <input type='password' name='password2' placeholder='Re-enter Password' onChange={this.handleChange} />
+          <input type='password' name='password' placeholder='Enter Password' onChange={this.handleChange} />
+          <input type='password' name='password1' placeholder='Re-enter Password' onChange={this.handleChange} />
           <input type='text' name='gender' placeholder='Enter Gender' onChange={this.handleChange} />
           <input type='text' name='jobRole' placeholder="What's the Job Role" onChange={this.handleChange} />
           <input type='text' name='department' placeholder='Which Department' onChange={this.handleChange} />
@@ -86,4 +91,4 @@ render() {
   }
 }
 
-export default App;
+export default CreateUser;

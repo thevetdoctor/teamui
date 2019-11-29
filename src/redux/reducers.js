@@ -1,7 +1,8 @@
 import teamActions from './actions';
 
 
-const initialState = JSON.parse(localStorage.getItem('employees')) || {
+const initialState = JSON.parse(localStorage.getItem('TeamworkDB')) || {
+// const initialState = {
     name: 'Teamwork!',
     errorMessage: '', 
     formView: true, 
@@ -24,30 +25,78 @@ const initialState = JSON.parse(localStorage.getItem('employees')) || {
         gender: 'F',
         jobRole: 'MD',
         department: 'admin',
-        address: 'Hqtrs'        },
-      ]
+        address: 'Hqtrs'        
+      }]
 }; 
 
 const teamReducer = (state = initialState, actions) => {
 
   switch(actions.type) {
-  case teamActions.addUser.type:
+  case teamActions.newUserSuccess.type:
       
-      console.log(Object.values(actions.user));
+    console.log('Getting NEW_USER_DATA from API');
+    let { newUserData } = actions;
+
+    console.log(newUserData);
 
       let newUserList = [ ...state.users ];
-          newUserList.push(actions.user);
+          newUserList.push(actions.newUserData);
 
       let newState = Object.assign({}, state, {
         ...state, users: newUserList,
         });
-      localStorage.setItem('employees', JSON.stringify(newState));
+      localStorage.setItem('TeamworkDB', JSON.stringify(newState));
 
   return newState; 
 
+  case teamActions.newUserFailure.type:
+    const { newUserError } = actions;
+    console.log('Error response from API', newUserError);
+    let newState2 = Object.assign({}, state, {
+    });
+   
+  return newState2;
+
+
+  case teamActions.signInSuccess.type:
+      
+    console.log('Sign In Response');
+    let { signInData } = actions;
+    let { token } = signInData.data;
+
+    console.log(signInData);
+
+      let signedInState = Object.assign({}, state, {
+        ...state, signedIn: true, tokenDetails: token,
+        });
+      localStorage.setItem('TeamworkDB', JSON.stringify(signedInState));
+      console.log('kk', JSON.parse(localStorage.getItem('TeamworkDB')));
+
+  return signedInState;
+
+
+  case teamActions.signInFailure.type:
+    // const { signInError } = actions;
+    console.log('Error response from API', actions);
+    let signedOutState = Object.assign({}, state, {
+      ...state, signedIn: false, tokenDetails: ''
+    });
+    
+  return signedOutState;
+
+
+  case teamActions.logError.type:
+    const { error } = actions; 
+    console.log('error-message: ', error);
+    let newState3 = Object.assign({}, state, {
+      ...state, errorMessage: error,
+    });
+    localStorage.setItem('TeamworkDB', JSON.stringify(newState3));
+  
+  return newState3;
   
   default:
-    localStorage.setItem('employees', JSON.stringify(state));
+    localStorage.setItem('TeamworkDB', JSON.stringify(state));
  
   return state;
   }

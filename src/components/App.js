@@ -1,89 +1,115 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
+import { Route, Switch } from 'react-router-dom';
 import store from '../redux/store';
-// import App1 from './App1';
-// import App2 from './App2';
-import CreateUser from './CreateUser';
+import Home from './Home';
+import CreateUser from './CreateUser'; 
+import SignIn from './SignIn';
+import NotFound from './NotFound';
+// import { handleCreateUser, handleSignIn } from '../functions.js';
 import '../css/App.css';
+
 
 function App() {
 
-  const state = store.getState();
-  const name = useSelector(state => state.name);
-  const errorMessage = useSelector(state => state.errorMessage);
-  const users = useSelector(state => state.users);
+const state = store.getState();
+console.log(state);
 
-  console.log(state);
 
-  const handleClick = (formValues) => {
-    console.log('input =>', formValues);
+const handleCreateUser = (formValues) => {
+  // console.log('input =>', formValues);
+  
+const { firstName, lastName, email, password, gender, jobRole, department, address } = formValues;
+
+// console.log(Object.values(formValues));
+let error = '';
+for (let item in formValues) {
+    if (formValues[item] === '') {
+      // console.log('item', item, formValues[item] ? formValues : 'not supplied');
+      error = `${item} not supplied!`;
+
+      store.dispatch({
+        type: 'LOG_ERROR',
+        error,
+      });
     
-  const { firstName, lastName, email, password, gender, jobRole, department, address } = formValues;
+      return false;
+    }
+
+} 
+  let  newUser = { firstName,
+                lastName,
+                email,
+                password,
+                gender,
+                jobRole,
+                department,
+                address
+              };
+  let newState = [...state.users, newUser];
+  console.log(newState);
+
+  error = '';
+  store.dispatch({
+        type: 'LOG_ERROR',
+        error,
+      });
+
+   store.dispatch({
+      type: 'ADD_USER',
+      newUser,
+   });
+
+  console.log('submitted', 'newUser =>', newUser);
+}
+
+
+const handleSignIn = (formValues) => {
+  console.log('input =>', formValues);
   
-  let usersInState = [ ...users ];
-  let userExist = usersInState.filter(user => user['email'] === formValues['email']);
-  
-  if (userExist.length) {
-     let error = 'User exists already';
+const { email, password } = formValues;
+
+console.log(Object.values(formValues));
+let error = '';
+for (let item in formValues) {
+    if (formValues[item] === '') {
+      console.log('item', item, formValues[item] ? formValues : 'not supplied');
+      error = `${item} not supplied!`;
+
+      store.dispatch({
+        type: 'LOG_ERROR',
+        error,
+      });
     
-        store.dispatch({
-          type: 'LOG_ERROR',
-          error,
-        });
-    return false;
-  }
-  console.log('user exist', userExist, usersInState);
-  console.log(Object.values(formValues));
-  let error = '';
-  for (let item in formValues) {
-      if (formValues[item] === '') {
-        console.log('item', item, formValues[item] ? formValues : 'not supplied');
-        error = `${item} not supplied!`;
-  
-        store.dispatch({
-          type: 'LOG_ERROR',
-          error,
-        });
-      
-        return false;
-      }
-  
-  } 
-    let  user = { firstName,
-                  lastName,
-                  email,
-                  password,
-                  gender,
-                  jobRole,
-                  department,
-                  address
-                };
-    let newState = [...state.users, user];
-    console.log(newState);
-  
-    error = '';
-    store.dispatch({
-          type: 'LOG_ERROR',
-          error,
-        });
-  
-     store.dispatch({
-        type: 'ADD_USER',
-        user,
-     });
-  
-    console.log('submitted', 'newUser =>', user);
-  } 
+      return false;
+    }
+
+} 
+  let  user = { email,
+                password,
+              };
+  error = '';
+  store.dispatch({
+        type: 'LOG_ERROR',
+        error,
+      });
+
+   store.dispatch({
+      type: 'SIGNIN_USER',
+      user,
+   });
+
+  console.log('signed in', user);
+};
 
 
   return (
-    <div className="App">
-        Welcome to {name}
-        {/* <App1 /> */}
-        {/* <App2 /> */}
-        {errorMessage ? <span className='error'>{errorMessage} </span> : <span></span>}
-        <CreateUser onClick={handleClick} />
-    </div>
+    <Switch>
+      <Route path='/' component={Home} exact/>
+      <Route path='/createuser' render={(props) => <CreateUser {...props} onClick={handleCreateUser} />} />
+      <Route path='/signin' render={(props) => <SignIn {...props} onClick={handleSignIn} />} />
+      <Route component={NotFound} />
+    </Switch>
   );
 }
 
