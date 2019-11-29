@@ -28,12 +28,16 @@ a {
 }
 
 input {
+  font-family: 'Raleway', sans-serif;
   padding: 0.6em;
   margin: 0.5em;
   /* font-size: 1em; */
   border-radius: 0.5em;
 }
 
+.links {
+  font-size: 0.8em;
+}
 /* input[type="submit"] {
   background-color: #009900;
   color: #fff;
