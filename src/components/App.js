@@ -6,6 +6,7 @@ import Home from './Home';
 import CreateUser from './CreateUser'; 
 import SignIn from './SignIn';
 import NotFound from './NotFound';
+import ProfilePage from './ProfilePage';
 // import { handleCreateUser, handleSignIn } from '../functions.js';
 import '../css/App.css';
 
@@ -108,6 +109,7 @@ for (let item in formValues) {
       <Route path='/' component={Home} exact/>
       <Route path='/createuser' render={(props) => <CreateUser {...props} onClick={handleCreateUser} />} />
       <Route path='/signin' render={(props) => <SignIn {...props} onClick={handleSignIn} />} />
+      <Route path='/profile' render={(props) => <ProfilePage {...props} onClick={handleSignIn} />} />
       <Route component={NotFound} />
     </Switch>
   );

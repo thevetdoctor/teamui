@@ -4,7 +4,7 @@ import '../css/App.css';
 
 // const errorMessage = useSelector(state => state.errorMessage);
 
-class CreateUser extends Component {
+class ProfilePage extends Component {
 
   constructor(props) {
     super(props);
@@ -63,15 +63,12 @@ handleChange({target}) {
   this.setState(prev => ({[name]: val}));
 }
 
-
 render() {
 
   return (
     <div className="App">
         <Link to='/' className='links'>Back</Link>
-        <Link to='/signin' className='links'>Sign In</Link>
-        <h3>New User Account</h3>
-        Please fill in user details
+        <h3>Welcome to your page, {'firstName' ? 'User' : 'Guest'}</h3>
  
         {/* <div>{errorMessage ? <span className='error'>{errorMessage} </span> : <span></span>}</div> */}
  
@@ -92,4 +89,4 @@ render() {
   }
 }
 
-export default CreateUser;
+export default ProfilePage;
