@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/teamui/static/css/main.78a167ff.chunk.css",
+    "main.js": "/teamui/static/js/main.6b49f2a8.chunk.js",
+    "main.js.map": "/teamui/static/js/main.6b49f2a8.chunk.js.map",
+    "runtime-main.js": "/teamui/static/js/runtime-main.17d6ce57.js",
+    "runtime-main.js.map": "/teamui/static/js/runtime-main.17d6ce57.js.map",
+    "static/js/2.53de8a2e.chunk.js": "/teamui/static/js/2.53de8a2e.chunk.js",
+    "static/js/2.53de8a2e.chunk.js.map": "/teamui/static/js/2.53de8a2e.chunk.js.map",
+    "index.html": "/teamui/index.html",
+    "precache-manifest.2baefac7bb2985b1ea96f7ec5aa29129.js": "/teamui/precache-manifest.2baefac7bb2985b1ea96f7ec5aa29129.js",
+    "service-worker.js": "/teamui/service-worker.js",
+    "static/css/main.78a167ff.chunk.css.map": "/teamui/static/css/main.78a167ff.chunk.css.map"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.17d6ce57.js",
+    "static/js/2.53de8a2e.chunk.js",
+    "static/css/main.78a167ff.chunk.css",
+    "static/js/main.6b49f2a8.chunk.js"
+  ]
+}
