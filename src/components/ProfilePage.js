@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import SignOut from './SignOut';
 import '../css/App.css';
 
 // const errorMessage = useSelector(state => state.errorMessage);
@@ -64,11 +65,15 @@ handleChange({target}) {
 }
 
 render() {
-
+        const { signOut, user } = this.props;
+        console.log(this.props);
   return (
     <div className="App">
-        <Link to='/' className='links'>Back</Link>
-        <h3>Welcome to your page, {'firstName' ? 'User' : 'Guest'}</h3>
+        <div className='nav'>
+          <Link to='/' className='links'>Home</Link>
+          <SignOut onClick={signOut} />
+        </div>
+        <h3>Welcome to your page, {user}</h3>
  
         {/* <div>{errorMessage ? <span className='error'>{errorMessage} </span> : <span></span>}</div> */}
  

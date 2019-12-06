@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import SignOut from './SignOut';
 import '../css/App.css';
 
 // const errorMessage = useSelector(state => state.errorMessage);
@@ -28,8 +29,8 @@ class CreateUser extends Component {
 handleSubmit (e) {
   e.preventDefault();
   // console.log(this.state);
-  let inputClass = e.target.children[9].classList;
-  console.log(inputClass.toggle('inactive'));
+  // let inputClass = e.target.children[9].classList;
+  // console.log(inputClass.toggle('inactive'));
 }
 
 
@@ -65,15 +66,19 @@ handleChange({target}) {
 
 
 render() {
-
-  return (
+          let { errorMessage, user, signOut } = this.props;
+          console.log(user);
+          if(user === 'teamaccess') user = 'Admin';
+          return (
     <div className="App">
-        <Link to='/' className='links'>Back</Link>
-        <Link to='/signin' className='links'>Sign In</Link>
+      <div className='nav'>
+        <Link to='/' className='links'>Home</Link>
+        <SignOut onClick={signOut} />
+        </div>
         <h3>New User Account</h3>
         Please fill in user details
  
-        {/* <div>{errorMessage ? <span className='error'>{errorMessage} </span> : <span></span>}</div> */}
+        <div>{errorMessage ? <span className='error'>{errorMessage} </span> : <span></span>}</div>
  
         <form className='form-selector' onSubmit={this.handleSubmit}>
           <input type='text' name='firstName' placeholder='Enter Firstname' onChange={this.handleChange} />

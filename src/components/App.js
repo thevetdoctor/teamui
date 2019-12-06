@@ -1,5 +1,5 @@
 import React from 'react';
-// import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import store from '../redux/store';
 import Home from './Home';
@@ -7,6 +7,7 @@ import CreateUser from './CreateUser';
 import SignIn from './SignIn';
 import NotFound from './NotFound';
 import ProfilePage from './ProfilePage';
+import CreateArticle from './CreateArticle';
 // import { handleCreateUser, handleSignIn } from '../functions.js';
 import '../css/App.css';
 
@@ -14,6 +15,7 @@ import '../css/App.css';
 function App() {
 
 const state = store.getState();
+const { signedIn, user, isAdmin, errorMessage, articlePosted } = useSelector(state => state);
 console.log(state);
 
 
@@ -47,8 +49,8 @@ for (let item in formValues) {
                 department,
                 address
               };
-  let newState = [...state.users, newUser];
-  console.log(newState);
+  // let newState = [...state.users, newUser];
+  // console.log(newState);
 
   error = '';
   store.dispatch({
@@ -66,11 +68,11 @@ for (let item in formValues) {
 
 
 const handleSignIn = (formValues) => {
-  console.log('input =>', formValues);
+  // console.log('input =>', formValues);
   
 const { email, password } = formValues;
 
-console.log(Object.values(formValues));
+// console.log(Object.values(formValues));
 let error = '';
 for (let item in formValues) {
     if (formValues[item] === '') {
@@ -94,22 +96,72 @@ for (let item in formValues) {
         type: 'LOG_ERROR',
         error,
       });
+  store.dispatch({
+        type: 'LOG_USER',
+        email,
+      });
 
    store.dispatch({
       type: 'SIGNIN_USER',
       user,
    });
 
-  console.log('signed in', user);
+  // console.log('signed in', user);
 };
 
 
+const handleCreateArticle = (formValues) => {
+  // console.log('input =>', formValues);
+  
+const { title, article } = formValues;
+
+// console.log(Object.values(formValues));
+let error = '';
+for (let item in formValues) {
+    if (formValues[item] === '') {
+      console.log('item', item, formValues[item] ? formValues : 'not supplied');
+      error = `${item} not supplied!`;
+
+      store.dispatch({
+        type: 'LOG_ERROR',
+        error,
+      });
+    
+      return false;
+    }
+
+} 
+  let  newArticle = { title,
+                article,
+              };
+  error = '';
+  store.dispatch({
+        type: 'LOG_ERROR',
+        error,
+      });
+
+   store.dispatch({
+      type: 'POST_ARTICLE',
+      newArticle,
+   });
+
+  // console.log('signed in', user);
+};
+
+const handleSignOut = () => {
+  console.log('am signing out!');
+  store.dispatch({
+    type: 'SIGN_OUT',
+  });
+}
+
   return (
     <Switch>
-      <Route path='/' component={Home} exact/>
-      <Route path='/createuser' render={(props) => <CreateUser {...props} onClick={handleCreateUser} />} />
-      <Route path='/signin' render={(props) => <SignIn {...props} onClick={handleSignIn} />} />
-      <Route path='/profile' render={(props) => <ProfilePage {...props} onClick={handleSignIn} />} />
+      <Route path='/' render={(props) => <Home {...props} user={user} isAdmin={isAdmin} signedIn={signedIn} signOut={handleSignOut} />} exact/>
+      <Route path='/createuser' render={(props) => <CreateUser {...props} signedIn={signedIn} user={user} errorMessage={errorMessage} onClick={handleCreateUser} />} />
+      <Route path='/signin' render={(props) => <SignIn {...props} signedIn={signedIn} errorMessage={errorMessage} onClick={handleSignIn} />} />
+      <Route path='/profile' render={(props) => <ProfilePage {...props} user={user} onClick={handleSignIn} signOut={handleSignOut} />} />
+      <Route path='/createarticle' render={(props) => <CreateArticle {...props} signedIn={signedIn} errorMessage={errorMessage} articlePosted={articlePosted} onClick={handleCreateArticle} />} />
       <Route component={NotFound} />
     </Switch>
   );

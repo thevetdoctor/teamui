@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import '../css/App.css';
 
-// const errorMessage = useSelector(state => state.errorMessage);
 
 class SignIn extends Component {
 
@@ -21,9 +20,9 @@ class SignIn extends Component {
 
 handleSubmit (e) {
   e.preventDefault();
-  let inputClass = e.target.children[2].classList;
+  // let inputClass = e.target.children[2].classList;
   // console.log(e.target.children);
-  console.log(inputClass.toggle('inactive'));
+  // console.log(inputClass.toggle('inactive'));
 }
 
 
@@ -34,33 +33,36 @@ handleChange({target}) {
   if (keyArray.indexOf(name) >= 0) {
   this.setState(prev => ({[name]: ''}));
   }
-  console.log('name =>', name, ': value =>', val);
+  // console.log('name =>', name, ': value =>', val);
 
   if (name === 'undefined' || name === undefined) {
-    console.log('name is undefined', 'target =>', target.parentNode, 'val =>', val);
+    // console.log('name is undefined', 'target =>', target.parentNode, 'val =>', val);
     return;
   }
   if (val === '' || val.trim() === '') {
     target.classList.add('empty');
-    console.log(`${name} is not supplied`);
+    // console.log(`${name} is not supplied`);
     return;
   }
-
-  
-
   this.setState(prev => ({[name]: val}));
 }
 
 
 render() {
-
+        const { signedIn, errorMessage } = this.props;
+        if(signedIn) {
+            console.log('signedin is true');
+          return <Redirect to='/' />
+            // return this.history.push('/');
+            }
   return (
     <div className="App">
-        <Link to='/' className='links'>Back</Link>
-        <Link to='/createuser' className='links'>Create New Account</Link>
+      <div className='nav'>
+        <Link to='/' className='links'>Home</Link>
+        </div>
         <h3>Sign In</h3>
  
-        {/* <div>{errorMessage ? <span className='error'>{errorMessage} </span> : <span></span>}</div> */}
+        <div>{errorMessage ? <span className='error'>{errorMessage} </span> : <span></span>}</div>
  
         <form className='form-selector' onSubmit={this.handleSubmit}>
           <input type='text' name='email' placeholder='Put in Email' onChange={this.handleChange} />
