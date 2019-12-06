@@ -13,7 +13,14 @@ body {
   box-sizing: border-box;
   width: 85vw;
   height: 100vh;
-  margin: 0 auto;
+  /* margin: 0 auto; */
+}
+
+.nav {
+  background-color: black;
+  color: whitesmoke;
+  margin: 0;
+  width: 100vw;
 }
 
 img {
@@ -27,16 +34,26 @@ a {
   text-decoration: none;
 }
 
-input {
+input, textarea {
   font-family: 'Raleway', sans-serif;
   padding: 0.6em;
   margin: 0.5em;
-  /* font-size: 1em; */
+  width: 100%;
+  font-size: 0.8em;
   border-radius: 0.5em;
+}
+
+input[type='submit'] {
+  background-color: green;
+  color: #fff;
+  width: 75%;
+  margin: 0.5em;
+  text-align: center;
 }
 
 .links {
   font-size: 0.8em;
+  color: white;
 }
 /* input[type="submit"] {
   background-color: #009900;
