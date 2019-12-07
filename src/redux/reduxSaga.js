@@ -1,6 +1,6 @@
 // import { call, put, take, fork, takeLatest } from 'redux-saga/effects';
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { createNewUser, signInUser, postArticle } from './api';
+import { createNewUser, signInUser, postArticle, postGIF, getAllFeed } from './api';
 
 
 function* createUser({type = 'ADD_USER', newUser}) {
@@ -43,6 +43,32 @@ function* postNewArticle({type = 'POST_ARTICLE', newArticle}) {
    }
 }
 
+function* postNewGIF({type = 'POST_GIF', gifpost}) {
+
+   try {
+
+      const newGIFData = yield call(postGIF, gifpost);
+
+      yield put({type: 'NEW_GIF_SUCCESS', newGIFData });
+   } catch (e) {
+      // console.log(e);
+      yield put({type: 'NEW_GIF_FAILURE', gifError: e.message });
+   }
+}
+
+function* gettingFeed({type = 'GET_FEED'}) {
+
+   try {
+
+      const feedData = yield call(getAllFeed);
+
+      yield put({type: 'FEED_SUCCESS', feedData });
+   } catch (e) {
+      // console.log(e);
+      yield put({type: 'FEED_FAILURE', feedError: e.message });
+   }
+}
+
 
 function* reduxSaga() {
 
@@ -51,6 +77,10 @@ function* reduxSaga() {
   yield takeLatest("SIGNIN_USER", signIn);
 
   yield takeLatest("POST_ARTICLE", postNewArticle);
+
+  yield takeLatest("POST_GIF", postNewGIF);
+
+  yield takeLatest("GET_FEED", gettingFeed);
 
   console.log('Redux Saga is on!');
 

@@ -11,15 +11,17 @@ body {
   line-height: 1.5;
   text-align: center;
   box-sizing: border-box;
-  width: 85vw;
+  /* width: 80%; */
   height: 100vh;
-  /* margin: 0 auto; */
+  /* margin: 0 10%; */
 }
 
 .nav {
-  background-color: black;
+  background-color: rgb(136, 10, 10);
   color: whitesmoke;
   margin: 0;
+  padding: 0.2em;
+  text-align: center;
   width: 100vw;
 }
 
@@ -34,7 +36,7 @@ a {
   text-decoration: none;
 }
 
-input, textarea {
+input, textarea, button {
   font-family: 'Raleway', sans-serif;
   padding: 0.6em;
   margin: 0.5em;
@@ -85,4 +87,11 @@ input.empty::placeholder {
 
 form {
   text-align: center;
+}
+
+.card {
+  /* border: 1px #ff0055; */
+  border-radius: 0.2em;
+  box-shadow: 0.1em 0.1em 0.1em 0.3em #000;
+  margin: 0.8em;
 }

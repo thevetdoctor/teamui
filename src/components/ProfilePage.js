@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect  } from 'react-router-dom';
 import SignOut from './SignOut';
 import '../css/App.css';
 
@@ -65,8 +65,12 @@ handleChange({target}) {
 }
 
 render() {
-        const { signOut, user } = this.props;
-        console.log(this.props);
+        const { signedIn, signOut, user, onClick } = this.props;
+        // console.log(this.props);
+        if(!signedIn) {
+          console.log('signedin is true');
+        return <Redirect to='/' />
+        }
   return (
     <div className="App">
         <div className='nav'>
@@ -87,7 +91,7 @@ render() {
           <input type='text' name='jobRole' placeholder="What's the Job Role" onChange={this.handleChange} />
           <input type='text' name='department' placeholder='Which Department' onChange={this.handleChange} />
           <input type='text' name='address' placeholder='Enter Address' onChange={this.handleChange} />
-          <input className='submit-inactive' type='submit' name='create-account' value='Create account' onClick={() => this.props.onClick(this.state)} />
+          <input className='submit-inactive' type='submit' name='create-account' value='Create account' onClick={() => onClick(this.state)} />
         </form>
     </div>
     );

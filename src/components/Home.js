@@ -19,7 +19,9 @@ class Home extends Component {
               :
               <div></div>
               }
+          <Link to='/feed' className='links'>Feed</Link>
           <Link to='/createarticle' className='links'>Create Article</Link>
+          <Link to='/postgif' className='links'>Post GIF Images</Link>
           <Link to='/profile' className='links'>Profile</Link>
           <SignOut onClick={signOut} />
           </div>

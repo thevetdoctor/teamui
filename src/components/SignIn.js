@@ -49,7 +49,7 @@ handleChange({target}) {
 
 
 render() {
-        const { signedIn, errorMessage } = this.props;
+        const { signedIn, errorMessage, onClick } = this.props;
         if(signedIn) {
             console.log('signedin is true');
           return <Redirect to='/' />
@@ -67,7 +67,7 @@ render() {
         <form className='form-selector' onSubmit={this.handleSubmit}>
           <input type='text' name='email' placeholder='Put in Email' onChange={this.handleChange} />
           <input type='password' name='password' placeholder='Enter Password' onChange={this.handleChange} />
-          <input className='submit-inactive' type='submit' name='sign-in' value='Sign In' onClick={() => this.props.onClick(this.state)} />
+          <input className='submit-inactive' type='submit' name='sign-in' value='Sign In' onClick={() => onClick(this.state)} />
         </form>
     </div>
     );

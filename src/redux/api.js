@@ -2,6 +2,8 @@
     let createUserUrl = `${apiUrl}/auth/create-user`;
     let signInUrl = `${apiUrl}/auth/signin`;
     let articleUrl = `${apiUrl}/articles`;
+    let gifUrl = `${apiUrl}/gifs`;
+    let feedUrl = `${apiUrl}/feed`;
     let token = `${(JSON.parse(localStorage.getItem('TeamworkDB')).tokenDetails)}`;
     
     const createNewUser = async (newUser) => {
@@ -44,7 +46,41 @@ const postArticle = async (article) => {
       const res = await fetch(articleUrl, articleOptions);
   
       const json = await res.json();
-      console.log('json response', json, articleOptions);
+      console.log('json response', json);
+      return json;
+    } catch (e) {
+      console.log("error response", e);
+    }
+  };
+
+const postGIF = async (gifpost) => {
+  
+  let token = `${(JSON.parse(localStorage.getItem('TeamworkDB')).tokenDetails)}`;
+
+  let gifOptions = { method: 'POST', body: JSON.stringify(gifpost), headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } };
+  
+    try {
+      const res = await fetch(gifUrl, gifOptions);
+  
+      const json = await res.json();
+      console.log('json response', json);
+      return json;
+    } catch (e) {
+      console.log("error response", e);
+    }
+  };
+
+const getAllFeed = async () => {
+  
+  let token = `${(JSON.parse(localStorage.getItem('TeamworkDB')).tokenDetails)}`;
+
+  let feedOptions = { method: 'GET', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } };
+  
+    try {
+      const res = await fetch(feedUrl, feedOptions);
+  
+      const json = await res.json();
+      console.log('json response', json);
       return json;
     } catch (e) {
       console.log("error response", e);
@@ -52,5 +88,5 @@ const postArticle = async (article) => {
   };
 
 
-  export { createNewUser, signInUser, postArticle };
+  export { createNewUser, signInUser, postArticle, postGIF, getAllFeed };
   
