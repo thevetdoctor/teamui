@@ -8,6 +8,8 @@ import SignIn from './SignIn';
 import NotFound from './NotFound';
 import ProfilePage from './ProfilePage';
 import CreateArticle from './CreateArticle';
+import PostGIF from './PostGIF';
+import Feed from './Feed';
 // import { handleCreateUser, handleSignIn } from '../functions.js';
 import '../css/App.css';
 
@@ -15,20 +17,17 @@ import '../css/App.css';
 function App() {
 
 const state = store.getState();
-const { signedIn, user, isAdmin, errorMessage, articlePosted } = useSelector(state => state);
+const { signedIn, user, isAdmin, errorMessage, articlePosted, gifPosted, feed } = useSelector(state => state);
 console.log(state);
 
 
 const handleCreateUser = (formValues) => {
-  // console.log('input =>', formValues);
   
 const { firstName, lastName, email, password, gender, jobRole, department, address } = formValues;
 
-// console.log(Object.values(formValues));
 let error = '';
 for (let item in formValues) {
     if (formValues[item] === '') {
-      // console.log('item', item, formValues[item] ? formValues : 'not supplied');
       error = `${item} not supplied!`;
 
       store.dispatch({
@@ -49,8 +48,6 @@ for (let item in formValues) {
                 department,
                 address
               };
-  // let newState = [...state.users, newUser];
-  // console.log(newState);
 
   error = '';
   store.dispatch({
@@ -68,11 +65,9 @@ for (let item in formValues) {
 
 
 const handleSignIn = (formValues) => {
-  // console.log('input =>', formValues);
   
 const { email, password } = formValues;
 
-// console.log(Object.values(formValues));
 let error = '';
 for (let item in formValues) {
     if (formValues[item] === '') {
@@ -105,17 +100,45 @@ for (let item in formValues) {
       type: 'SIGNIN_USER',
       user,
    });
-
-  // console.log('signed in', user);
 };
 
 
 const handleCreateArticle = (formValues) => {
-  // console.log('input =>', formValues);
   
 const { title, article } = formValues;
 
-// console.log(Object.values(formValues));
+let error = '';
+for (let item in formValues) {
+    if (formValues[item] === '') {
+      console.log('item', item, formValues[item] ? formValues : 'not supplied');
+      error = `${item} not supplied!`;
+
+      store.dispatch({
+        type: 'LOG_ERROR',
+        error,
+      });
+      return false;
+    }
+} 
+  let  newArticle = { title,
+                article,
+              };
+  error = '';
+  store.dispatch({
+        type: 'LOG_ERROR',
+        error,
+      });
+
+   store.dispatch({
+      type: 'POST_ARTICLE',
+      newArticle,
+   });
+};
+
+
+const handlePostGIF = (formValues) => {
+  
+const { title, imageUrl } = formValues;
 let error = '';
 for (let item in formValues) {
     if (formValues[item] === '') {
@@ -131,8 +154,8 @@ for (let item in formValues) {
     }
 
 } 
-  let  newArticle = { title,
-                article,
+  let  gifpost = { title,
+                imageUrl,
               };
   error = '';
   store.dispatch({
@@ -141,11 +164,9 @@ for (let item in formValues) {
       });
 
    store.dispatch({
-      type: 'POST_ARTICLE',
-      newArticle,
+      type: 'POST_GIF',
+      gifpost,
    });
-
-  // console.log('signed in', user);
 };
 
 const handleSignOut = () => {
@@ -155,13 +176,21 @@ const handleSignOut = () => {
   });
 }
 
+const getFeed = () => {
+  console.log('feed is here!');
+  store.dispatch({
+    type: 'GET_FEED',
+  });}
+
   return (
     <Switch>
       <Route path='/' render={(props) => <Home {...props} user={user} isAdmin={isAdmin} signedIn={signedIn} signOut={handleSignOut} />} exact/>
-      <Route path='/createuser' render={(props) => <CreateUser {...props} signedIn={signedIn} user={user} errorMessage={errorMessage} onClick={handleCreateUser} />} />
+      <Route path='/createuser' render={(props) => <CreateUser {...props} signedIn={signedIn} user={user} errorMessage={errorMessage} onClick={handleCreateUser} signOut={handleSignOut} />} />
       <Route path='/signin' render={(props) => <SignIn {...props} signedIn={signedIn} errorMessage={errorMessage} onClick={handleSignIn} />} />
-      <Route path='/profile' render={(props) => <ProfilePage {...props} user={user} onClick={handleSignIn} signOut={handleSignOut} />} />
-      <Route path='/createarticle' render={(props) => <CreateArticle {...props} signedIn={signedIn} errorMessage={errorMessage} articlePosted={articlePosted} onClick={handleCreateArticle} />} />
+      <Route path='/profile' render={(props) => <ProfilePage {...props} signedIn={signedIn} user={user} onClick={handleSignIn} signOut={handleSignOut} />} />
+      <Route path='/createarticle' render={(props) => <CreateArticle {...props} signedIn={signedIn} errorMessage={errorMessage} articlePosted={articlePosted} onClick={handleCreateArticle} signOut={handleSignOut} />} />
+      <Route path='/postgif' render={(props) => <PostGIF {...props} signedIn={signedIn} errorMessage={errorMessage} gifPosted={gifPosted} onClick={handlePostGIF} signOut={handleSignOut} />} />
+      <Route path='/feed' render={(props) => <Feed {...props} signedIn={signedIn} errorMessage={errorMessage} signOut={handleSignOut} onLoad={getFeed} feed={feed} />} />
       <Route component={NotFound} />
     </Switch>
   );

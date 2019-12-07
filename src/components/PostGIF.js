@@ -4,14 +4,14 @@ import SignOut from './SignOut';
 import '../css/App.css';
 
 
-class CreateArticle extends Component {
+class PostGIF extends Component {
 
   constructor(props) {
     super(props);
   
    this.state = {
     title: '', 
-    article: '',
+    imageUrl: 'C:\\Users\\ACER\\Pictures\\teamwork\\koala.jpg',
   }
 
    this.handleChange = this.handleChange.bind(this);
@@ -53,15 +53,15 @@ handleChange({target}) {
 
 
 render() {
-          let { articlePosted, errorMessage, signedIn, signOut, onClick } = this.props;
+          let { gifPosted, errorMessage, signedIn, signOut, onClick } = this.props;
           if(!signedIn) {
             console.log('signedin is true');
           return <Redirect to='/' />
           }
-   return (
+  return (
     <div className="App">
         <div className='nav'>
-          {this.props.signedIn ?
+          {signedIn ?
             <div>
                 <Link to='/' className='links'>Home</Link>
                 <Link to='/profile' className='links'>Profile</Link>
@@ -73,22 +73,22 @@ render() {
           }
         </div>
         <div>
-            {errorMessage ? <span className='error'>{errorMessage} </span> : <span></span>}
+            {errorMessage ? <span className='error'>{(typeof errorMessage) !== 'string' ? errorMessage.message : errorMessage} </span> : <span></span>}
         </div>
-        {articlePosted ?
-            <div><h3>Article posted, write another article? </h3></div>
+        {gifPosted ?
+            <div><h3>Image uploaded, post another image? </h3></div>
         :
-            <div><h3>Write & Share</h3></div>
+            <div><h3>Post GIF images to your team!</h3></div>
         }
  
         <form className='form-selector' onSubmit={this.handleSubmit}>
-          <input type='text' name='title' placeholder='Article Title' onChange={this.handleChange} />
-          <textarea type='text' name='article' placeholder='Your Article' onChange={this.handleChange} />
-          <input className='submit-inactive' type='submit' name='sign-in' value='Post Article' onClick={() => onClick(this.state)} />
+          <input type='text' name='title' placeholder='GIF Title' onChange={this.handleChange} />
+          <input type='file' name='imageUrl' placeholder='Upload GIF' onChange={this.handleChange} />
+          <input className='submit-inactive' type='submit' name='post-gif' value='Post GIF' onClick={() => onClick(this.state)} />
         </form>
     </div>
     );
   }
 }
 
-export default CreateArticle;
+export default PostGIF;

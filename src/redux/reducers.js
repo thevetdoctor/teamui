@@ -1,8 +1,8 @@
 import teamActions from './actions';
 
 
-// const initialState = JSON.parse(localStorage.getItem('TeamworkDB')) || {
-const initialState = {
+const initialState = JSON.parse(localStorage.getItem('TeamworkDB')) || {
+// const initialState = {
     name: 'Teamwork!',
     errorMessage: '', 
     loading: false,
@@ -10,6 +10,7 @@ const initialState = {
     signedIn: false,
     isAdmin: false,
     articlePosted: false,
+    gifPosted: false,
     tokenDetails: ''  
 }; 
 
@@ -75,7 +76,7 @@ const teamReducer = (state = initialState, actions) => {
         // const { signInError } = actions;
         console.log('User signed out', actions);
         let signedOut = Object.assign({}, state, {
-          ...state, signedIn: false, isAdmin: false, tokenDetails: ''
+          ...state, signedIn: false, user: '', isAdmin: false, tokenDetails: ''
         });
         localStorage.setItem('TeamworkDB', JSON.stringify(signedOut));
         
@@ -134,6 +135,72 @@ const teamReducer = (state = initialState, actions) => {
         localStorage.setItem('TeamworkDB', JSON.stringify(failedArticleState));
         
       return failedArticleState;
+
+
+      case teamActions.newGIFSuccess.type:
+          
+        console.log('Post GIF Response');
+        let { newGIFData } = actions;
+
+        console.log(newGIFData);
+        let newGIFState;
+          if(newGIFData.status === 'error') {
+            newGIFState = Object.assign({}, state, {
+              ...state, gifPosted: false, errorMessage: newGIFData.error
+              });
+          } else {
+            newGIFState = Object.assign({}, state, {
+            ...state, gifPosted: true
+            });
+          }
+          console.log('new gif state', newGIFState);
+          localStorage.setItem('TeamworkDB', JSON.stringify(newGIFState));
+
+      return newGIFState;
+
+
+      case teamActions.newGIFFailure.type:
+        const { gifError } = actions;
+        console.log('Error response from API', actions);
+        let failedGIFState = Object.assign({}, state, {
+          ...state, errorMessage: gifError
+        });
+        localStorage.setItem('TeamworkDB', JSON.stringify(failedGIFState));
+        
+      return failedGIFState;
+
+
+      case teamActions.feedSuccess.type:
+          
+        console.log('Get Feed Response');
+        let { feedData } = actions;
+
+        console.log(feedData);
+        let feedState;
+          if(feedData.status === 'error') {
+            feedState = Object.assign({}, state, {
+              ...state, errorMessage: feedData.error
+              });
+          } else {
+            feedState = Object.assign({}, state, {
+            ...state, feed: feedData
+            });
+          }
+          console.log('new feed state', feedState);
+          localStorage.setItem('TeamworkDB', JSON.stringify(feedState));
+
+      return feedState;
+
+
+      case teamActions.feedFailure.type:
+        const { feedError } = actions;
+        console.log('Error response from API', actions);
+        let failedfeedState = Object.assign({}, state, {
+          ...state, errorMessage: feedError
+        });
+        localStorage.setItem('TeamworkDB', JSON.stringify(failedfeedState));
+        
+      return failedfeedState;
       
       default:
         localStorage.setItem('TeamworkDB', JSON.stringify(state));
