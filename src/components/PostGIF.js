@@ -11,7 +11,8 @@ class PostGIF extends Component {
   
    this.state = {
     title: '', 
-    imageUrl: 'C:\\Users\\ACER\\Pictures\\teamwork\\koala.jpg',
+    // imageUrl: 'C:\\Users\\ACER\\Pictures\\teamwork\\koala.jpg',
+    imageUrl: 'C://Users//ACER//Pictures//teamwork//koala.jpg',
   }
 
    this.handleChange = this.handleChange.bind(this);

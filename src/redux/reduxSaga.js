@@ -1,6 +1,6 @@
 // import { call, put, take, fork, takeLatest } from 'redux-saga/effects';
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { createNewUser, signInUser, postArticle, postGIF, getAllFeed } from './api';
+import { createNewUser, signInUser, postArticle, postGIF, getAllFeed, deletePost } from './api';
 
 
 function* createUser({type = 'ADD_USER', newUser}) {
@@ -69,6 +69,20 @@ function* gettingFeed({type = 'GET_FEED'}) {
    }
 }
 
+function* deletingPost({type = 'DELETE_POST', postId}) {
+
+   try {
+      console.log(postId);
+
+      const deletePostData = yield call(deletePost, postId);
+
+      yield put({type: 'DELETE_SUCCESS', deletePostData });
+   } catch (e) {
+      // console.log(e);
+      yield put({type: 'DELETE_FAILURE', deletePostError: e.message });
+   }
+}
+
 
 function* reduxSaga() {
 
@@ -81,6 +95,8 @@ function* reduxSaga() {
   yield takeLatest("POST_GIF", postNewGIF);
 
   yield takeLatest("GET_FEED", gettingFeed);
+
+  yield takeLatest("DELETE_POST", deletingPost);
 
   console.log('Redux Saga is on!');
 

@@ -4,10 +4,11 @@
     let articleUrl = `${apiUrl}/articles`;
     let gifUrl = `${apiUrl}/gifs`;
     let feedUrl = `${apiUrl}/feed`;
-    let token = `${(JSON.parse(localStorage.getItem('TeamworkDB')).tokenDetails)}`;
     
     const createNewUser = async (newUser) => {
   
+    let token = `${(JSON.parse(localStorage.getItem('TeamworkDB')).tokenDetails)}`;
+
      let createUserOptions = { method: 'POST', body: JSON.stringify(newUser), headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } };
       try {
       const res = await fetch(createUserUrl, createUserOptions);
@@ -87,6 +88,23 @@ const getAllFeed = async () => {
     }
   };
 
+const deletePost = async (postId) => {
+  
+  let token = `${(JSON.parse(localStorage.getItem('TeamworkDB')).tokenDetails)}`;
 
-  export { createNewUser, signInUser, postArticle, postGIF, getAllFeed };
+  let deleteOptions = { method: 'DELETE', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } };
+  
+    try {
+      const res = await fetch(`${articleUrl}/${postId}`, deleteOptions);
+  
+      const json = await res.json();
+      console.log('json response', json, postId);
+      return json;
+    } catch (e) {
+      console.log("error response", e);
+    }
+  };
+
+
+  export { createNewUser, signInUser, postArticle, postGIF, getAllFeed, deletePost };
   

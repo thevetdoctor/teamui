@@ -7,6 +7,7 @@ const teamActions = {
     postArticle: { type: 'POST_ARTICLE'},
     postGIF: { type: 'POST_GIF'},
     getFeed: { type: 'GET_FEED'},
+    deletePost: { type: 'DELETE_POST' },
     newUserSuccess: { type: 'NEWUSER_SUCCESS'},
     newUserFailure: { type: 'NEWUSER_FAILURE'},
     signInSuccess: { type: 'SIGNIN_SUCCESS'},
@@ -17,6 +18,8 @@ const teamActions = {
     newGIFFailure: { type: 'NEW_GIF_FAILURE'},
     feedSuccess: { type: 'FEED_SUCCESS'},
     feedFailure: { type: 'FEED_FAILURE'},
+    deletePostSuccess: { type: 'DELETE_SUCCESS'},
+    deletePostFailure: { type: 'DELETE_FAILURE'},
     }
   
   export default teamActions;

@@ -14,7 +14,7 @@ import Feed from './Feed';
 import '../css/App.css';
 
 
-function App() {
+const App = () => {
 
 const state = store.getState();
 const { signedIn, user, isAdmin, errorMessage, articlePosted, gifPosted, feed } = useSelector(state => state);
@@ -171,13 +171,36 @@ for (let item in formValues) {
 
 const handleSignOut = () => {
   console.log('am signing out!');
+
+  store.dispatch({
+    type: 'LOG_ERROR',
+    error: '',
+  });
   store.dispatch({
     type: 'SIGN_OUT',
   });
 }
 
+const handleDelete = (postId) => {
+  console.log(`deleting post with ID ${postId}!`);
+  
+  store.dispatch({
+    type: 'LOG_ERROR',
+    error: '',
+  });
+  store.dispatch({
+    type: 'DELETE_POST',
+    postId
+  });
+}
+
 const getFeed = () => {
   console.log('feed is here!');
+
+  store.dispatch({
+        type: 'LOG_ERROR',
+        error: '',
+      });
   store.dispatch({
     type: 'GET_FEED',
   });}
@@ -190,7 +213,7 @@ const getFeed = () => {
       <Route path='/profile' render={(props) => <ProfilePage {...props} signedIn={signedIn} user={user} onClick={handleSignIn} signOut={handleSignOut} />} />
       <Route path='/createarticle' render={(props) => <CreateArticle {...props} signedIn={signedIn} errorMessage={errorMessage} articlePosted={articlePosted} onClick={handleCreateArticle} signOut={handleSignOut} />} />
       <Route path='/postgif' render={(props) => <PostGIF {...props} signedIn={signedIn} errorMessage={errorMessage} gifPosted={gifPosted} onClick={handlePostGIF} signOut={handleSignOut} />} />
-      <Route path='/feed' render={(props) => <Feed {...props} signedIn={signedIn} errorMessage={errorMessage} signOut={handleSignOut} onLoad={getFeed} feed={feed} />} />
+      <Route path='/feed' render={(props) => <Feed {...props} signedIn={signedIn} errorMessage={errorMessage} signOut={handleSignOut} onLoad={() => getFeed()} feed={feed} onDelete={handleDelete} />} />
       <Route component={NotFound} />
     </Switch>
   );
