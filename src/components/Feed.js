@@ -5,10 +5,6 @@ import '../css/App.css';
 
 
 class Feed extends Component {
-    // constructor(props) {
-    //     super(props);
-    // }
-
 
 render() {
           let { errorMessage, feed, signedIn, signOut, onLoad } = this.props;
