@@ -81,7 +81,7 @@ const getAllFeed = async () => {
       const res = await fetch(feedUrl, feedOptions);
   
       const json = await res.json();
-      console.log('json response', json);
+      // console.log('json response', json);
       return json;
     } catch (e) {
       console.log("error response", e);
@@ -106,5 +106,25 @@ const deletePost = async (postId) => {
   };
 
 
-  export { createNewUser, signInUser, postArticle, postGIF, getAllFeed, deletePost };
+const updatePost = async (articleToUpdate) => {
+  
+  let token = `${(JSON.parse(localStorage.getItem('TeamworkDB')).tokenDetails)}`;
+  let { title, article } = articleToUpdate;
+  // console.log(articleToUpdate);
+
+  let updateOptions = { method: 'PATCH', body: JSON.stringify({ title, article }), headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } };
+  
+    try {
+      const res = await fetch(`${articleUrl}/${articleToUpdate.id}`, updateOptions);
+  
+      const json = await res.json();
+      console.log('json response', json, articleToUpdate.id);
+      return json;
+    } catch (e) {
+      console.log("error response", e);
+    }
+  };
+
+
+  export { createNewUser, signInUser, postArticle, postGIF, getAllFeed, deletePost, updatePost };
   

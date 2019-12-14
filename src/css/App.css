@@ -6,7 +6,7 @@ body {
   color: #000;
   padding: 0;
   font-family: 'Raleway', sans-serif;
-  font-size: 1.3em;
+  font-size: 1.1em;
   /* font-weight: 100; */
   line-height: 1.5;
   text-align: center;
@@ -98,11 +98,34 @@ form {
   overflow-wrap: break-word;
 }
 
-.delete {
+.btn {
   position: relative;
   padding: 0.2em;
   margin: 0.2em;
+  font-size: 0.8em;
+  border-radius: 0.3em;
+}
+
+.delete {
   background-color: #ff0055;
   color: #fff;
-  border-radius: 0.3em;
+}
+
+.edit {
+  background-color: #096155;
+  color: #fff;
+}
+
+.cancel {
+  background-color: slategrey;
+  color: #fff;
+}
+
+@media screen and (min-width: 500px) {
+  body {
+    display: flex;
+    flex-flow: column wrap;
+    margin: 0 10%;
+  }
+  
 }

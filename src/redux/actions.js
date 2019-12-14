@@ -8,6 +8,8 @@ const teamActions = {
     postGIF: { type: 'POST_GIF'},
     getFeed: { type: 'GET_FEED'},
     deletePost: { type: 'DELETE_POST' },
+    editPost: { type: 'EDIT_POST' },
+    updateArticle: { type: 'UPDATE_ARTICLE' },
     newUserSuccess: { type: 'NEWUSER_SUCCESS'},
     newUserFailure: { type: 'NEWUSER_FAILURE'},
     signInSuccess: { type: 'SIGNIN_SUCCESS'},

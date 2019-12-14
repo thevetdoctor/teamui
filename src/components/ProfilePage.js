@@ -90,7 +90,7 @@ render() {
         <h3>Welcome to your page, {user}</h3>
  
         {/* <div>{errorMessage ? <span className='error'>{errorMessage} </span> : <span></span>}</div> */}
-        {this.state.editable ?
+        {!this.state.editable ?
         <div>
           <input type='text' name='firstName' placeholder={user} onChange={this.handleChange} readOnly />
           <input type='text' name='lastName' placeholder={user} onChange={this.handleChange} readOnly />

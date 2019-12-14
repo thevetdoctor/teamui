@@ -1,19 +1,31 @@
 import teamActions from './actions';
 
 
-const initialState = JSON.parse(localStorage.getItem('TeamworkDB')) || {
-// const initialState = {
+// const initialState = JSON.parse(localStorage.getItem('TeamworkDB')) || {
+const initialState = {
     name: 'Teamwork!',
     errorMessage: '', 
     loading: false,
-    user: '', 
-    signedIn: false,
-    isAdmin: false,
+    user: JSON.parse(sessionStorage.getItem('TeamworkDB')) ? JSON.parse(sessionStorage.getItem('TeamworkDB')).user : '', 
+    signedIn: JSON.parse(sessionStorage.getItem('TeamworkDB')) ? JSON.parse(sessionStorage.getItem('TeamworkDB')).signedIn : false,
+    isAdmin: JSON.parse(sessionStorage.getItem('TeamworkDB')) ? JSON.parse(sessionStorage.getItem('TeamworkDB')).isAdmin : false,
     articlePosted: false,
     gifPosted: false,
-    tokenDetails: '',
+    tokenDetails: JSON.parse(sessionStorage.getItem('TeamworkDB')).tokenDetails || '',
     feed: {data: []}  
 }; 
+// const initialState = {
+//     name: 'Teamwork!',
+//     errorMessage: '', 
+//     loading: false,
+//     user: '', 
+//     signedIn: false,
+//     isAdmin: false,
+//     articlePosted: false,
+//     gifPosted: false,
+//     tokenDetails: '',
+//     feed: {data: []}  
+// }; 
 
 const teamReducer = (state = initialState, actions) => {
 
@@ -59,7 +71,8 @@ const teamReducer = (state = initialState, actions) => {
           let signedInState = Object.assign({}, state, {
             ...state, signedIn: true, tokenDetails: token, isAdmin: signInData.data.isAdmin
             });
-          localStorage.setItem('TeamworkDB', JSON.stringify(signedInState));
+          // localStorage.setItem('TeamworkDB', JSON.stringify(signedInState));
+          sessionStorage.setItem('TeamworkDB', JSON.stringify(signedInState));
 
       return signedInState;
 
@@ -91,7 +104,8 @@ const teamReducer = (state = initialState, actions) => {
         let newUser = Object.assign({}, state, {
           ...state, user: email.slice(0, email.indexOf('@')),
         });
-        localStorage.setItem('TeamworkDB', JSON.stringify(newUser));
+        // localStorage.setItem('TeamworkDB', JSON.stringify(newUser));
+        sessionStorage.setItem('TeamworkDB', JSON.stringify(newUser));
       
       return newUser;
 
@@ -177,7 +191,7 @@ const teamReducer = (state = initialState, actions) => {
         console.log('Get Feed Response');
         let { feedData } = actions;
 
-        console.log(feedData);
+        // console.log(feedData);
         let feedState;
           if(feedData.status === 'error') {
             feedState = Object.assign({}, state, {

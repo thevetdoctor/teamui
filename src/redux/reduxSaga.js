@@ -1,6 +1,6 @@
 // import { call, put, take, fork, takeLatest } from 'redux-saga/effects';
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { createNewUser, signInUser, postArticle, postGIF, getAllFeed, deletePost } from './api';
+import { createNewUser, signInUser, postArticle, postGIF, getAllFeed, deletePost, updatePost } from './api';
 
 
 function* createUser({type = 'ADD_USER', newUser}) {
@@ -76,10 +76,34 @@ function* deletingPost({type = 'DELETE_POST', postId}) {
 
       const deletePostData = yield call(deletePost, postId);
 
-      yield put({type: 'DELETE_SUCCESS', deletePostData });
+      if (deletePostData) {
+      const feedData = yield call(getAllFeed);
+      yield put({type: 'FEED_SUCCESS', feedData });
+      }
+
+      // yield put({type: 'DELETE_SUCCESS', deletePostData });
    } catch (e) {
       // console.log(e);
       yield put({type: 'DELETE_FAILURE', deletePostError: e.message });
+   }
+}
+
+function* updatingPost({type = 'UPDATE_ARTICLE', articleToUpdate}) {
+
+   try {
+      // console.log(articleToUpdate);
+
+      const updatePostData = yield call(updatePost, articleToUpdate);
+
+      if (updatePostData) {
+      const feedData = yield call(getAllFeed);
+      yield put({type: 'FEED_SUCCESS', feedData });
+      }
+
+      // yield put({type: 'DELETE_SUCCESS', deletePostData });
+   } catch (e) {
+      // console.log(e);
+      yield put({type: 'UPDATE_FAILURE', updatePostError: e.message });
    }
 }
 
@@ -97,6 +121,8 @@ function* reduxSaga() {
   yield takeLatest("GET_FEED", gettingFeed);
 
   yield takeLatest("DELETE_POST", deletingPost);
+
+  yield takeLatest("UPDATE_ARTICLE", updatingPost);
 
   console.log('Redux Saga is on!');
 
