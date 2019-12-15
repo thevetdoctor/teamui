@@ -21,6 +21,7 @@ class CreateArticle extends Component {
 
 handleSubmit (e) {
   e.preventDefault();
+  this.setState(prev => ({ title: '888', article: '999' }))
   // let inputClass = e.target.children[2].classList;
   // console.log(e.target.children);
   // console.log(inputClass.toggle('inactive'));
@@ -30,7 +31,7 @@ handleSubmit (e) {
 handleChange({target}) {
   let name = target.name;
   let val = target.value;
-  let keyArray = ['email', 'password'];
+  let keyArray = ['title', 'article'];
   if (keyArray.indexOf(name) >= 0) {
   this.setState(prev => ({[name]: ''}));
   }

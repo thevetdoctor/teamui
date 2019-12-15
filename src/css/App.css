@@ -6,7 +6,7 @@ body {
   color: #000;
   padding: 0;
   font-family: 'Raleway', sans-serif;
-  font-size: 1.3em;
+  font-size: 1.1em;
   /* font-weight: 100; */
   line-height: 1.5;
   text-align: center;
@@ -40,7 +40,7 @@ input, textarea, button {
   font-family: 'Raleway', sans-serif;
   padding: 0.6em;
   margin: 0.5em;
-  width: 100%;
+  /* width: 100%; */
   font-size: 0.8em;
   border-radius: 0.5em;
 }
@@ -48,7 +48,7 @@ input, textarea, button {
 input[type='submit'] {
   background-color: green;
   color: #fff;
-  width: 75%;
+  /* width: 75%; */
   margin: 0.5em;
   text-align: center;
 }
@@ -91,7 +91,41 @@ form {
 
 .card {
   /* border: 1px #ff0055; */
+  position: relative;
   border-radius: 0.2em;
   box-shadow: 0.1em 0.1em 0.1em 0.3em #000;
   margin: 0.8em;
+  overflow-wrap: break-word;
+}
+
+.btn {
+  position: relative;
+  padding: 0.2em;
+  margin: 0.2em;
+  font-size: 0.8em;
+  border-radius: 0.3em;
+}
+
+.delete {
+  background-color: #ff0055;
+  color: #fff;
+}
+
+.edit {
+  background-color: #096155;
+  color: #fff;
+}
+
+.cancel {
+  background-color: slategrey;
+  color: #fff;
+}
+
+@media screen and (min-width: 500px) {
+  body {
+    display: flex;
+    flex-flow: column wrap;
+    margin: 0 10%;
+  }
+  
 }

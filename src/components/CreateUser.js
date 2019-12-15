@@ -66,7 +66,7 @@ handleChange({target}) {
 
 
 render() {
-          let { errorMessage, user, signedIn, signOut, onClick } = this.props;
+          let { user, signedIn, signOut, onClick } = this.props;
           // console.log(user);
           if(user === 'teamaccess') user = 'Admin';
           if(!signedIn) {
@@ -82,7 +82,7 @@ render() {
         <h3>New User Account</h3>
         Please fill in user details
  
-        <div>{errorMessage ? <span className='error'>{errorMessage} </span> : <span></span>}</div>
+        {/* <div>{errorMessage ? <span className='error'>{errorMessage} </span> : <span></span>}</div> */}
  
         <form className='form-selector' onSubmit={this.handleSubmit}>
           <input type='text' name='firstName' placeholder='Enter Firstname' onChange={this.handleChange} />

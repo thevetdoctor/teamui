@@ -1,18 +1,31 @@
 import teamActions from './actions';
 
 
-const initialState = JSON.parse(localStorage.getItem('TeamworkDB')) || {
-// const initialState = {
+// const initialState = JSON.parse(localStorage.getItem('TeamworkDB')) || {
+const initialState = {
     name: 'Teamwork!',
     errorMessage: '', 
     loading: false,
-    user: '', 
-    signedIn: false,
-    isAdmin: false,
+    user: JSON.parse(sessionStorage.getItem('TeamworkDB')) ? JSON.parse(sessionStorage.getItem('TeamworkDB')).user : '', 
+    signedIn: JSON.parse(sessionStorage.getItem('TeamworkDB')) ? JSON.parse(sessionStorage.getItem('TeamworkDB')).signedIn : false,
+    isAdmin: JSON.parse(sessionStorage.getItem('TeamworkDB')) ? JSON.parse(sessionStorage.getItem('TeamworkDB')).isAdmin : false,
     articlePosted: false,
     gifPosted: false,
-    tokenDetails: ''  
+    tokenDetails: JSON.parse(sessionStorage.getItem('TeamworkDB')).tokenDetails || '',
+    feed: {data: []}  
 }; 
+// const initialState = {
+//     name: 'Teamwork!',
+//     errorMessage: '', 
+//     loading: false,
+//     user: '', 
+//     signedIn: false,
+//     isAdmin: false,
+//     articlePosted: false,
+//     gifPosted: false,
+//     tokenDetails: '',
+//     feed: {data: []}  
+// }; 
 
 const teamReducer = (state = initialState, actions) => {
 
@@ -51,13 +64,15 @@ const teamReducer = (state = initialState, actions) => {
         console.log('Sign In Response');
         let { signInData } = actions;
         let { isAdmin, token } = signInData.data;
+        if(isAdmin === null) signInData.data.isAdmin = false;
 
         console.log(signInData);
 
           let signedInState = Object.assign({}, state, {
-            ...state, signedIn: true, tokenDetails: token, isAdmin
+            ...state, signedIn: true, tokenDetails: token, isAdmin: signInData.data.isAdmin
             });
-          localStorage.setItem('TeamworkDB', JSON.stringify(signedInState));
+          // localStorage.setItem('TeamworkDB', JSON.stringify(signedInState));
+          sessionStorage.setItem('TeamworkDB', JSON.stringify(signedInState));
 
       return signedInState;
 
@@ -89,7 +104,8 @@ const teamReducer = (state = initialState, actions) => {
         let newUser = Object.assign({}, state, {
           ...state, user: email.slice(0, email.indexOf('@')),
         });
-        localStorage.setItem('TeamworkDB', JSON.stringify(newUser));
+        // localStorage.setItem('TeamworkDB', JSON.stringify(newUser));
+        sessionStorage.setItem('TeamworkDB', JSON.stringify(newUser));
       
       return newUser;
 
@@ -175,7 +191,7 @@ const teamReducer = (state = initialState, actions) => {
         console.log('Get Feed Response');
         let { feedData } = actions;
 
-        console.log(feedData);
+        // console.log(feedData);
         let feedState;
           if(feedData.status === 'error') {
             feedState = Object.assign({}, state, {
@@ -201,6 +217,39 @@ const teamReducer = (state = initialState, actions) => {
         localStorage.setItem('TeamworkDB', JSON.stringify(failedfeedState));
         
       return failedfeedState;
+
+
+      case teamActions.deletePostSuccess.type:
+          
+        console.log('Get DELETE POST Response');
+        let { deletePostData } = actions;
+
+        console.log(deletePostData);
+        let deletePostState;
+          if(deletePostData.status === 'error') {
+            deletePostState = Object.assign({}, state, {
+              ...state, errorMessage: deletePostData.error
+              });
+          } else {
+            deletePostState = Object.assign({}, state, {
+            ...state, postDeleted: true
+            });
+          }
+          console.log('delete post state', true);
+          localStorage.setItem('TeamworkDB', JSON.stringify(deletePostState));
+
+      return deletePostState;
+
+
+      case teamActions.deletePostFailure.type:
+        const { deletePostError } = actions;
+        console.log('Error response from API', actions);
+        let failedDeleteState = Object.assign({}, state, {
+          ...state, errorMessage: deletePostError
+        });
+        localStorage.setItem('TeamworkDB', JSON.stringify(failedDeleteState));
+        
+      return failedDeleteState;
       
       default:
         localStorage.setItem('TeamworkDB', JSON.stringify(state));

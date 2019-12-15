@@ -4,10 +4,11 @@
     let articleUrl = `${apiUrl}/articles`;
     let gifUrl = `${apiUrl}/gifs`;
     let feedUrl = `${apiUrl}/feed`;
-    let token = `${(JSON.parse(localStorage.getItem('TeamworkDB')).tokenDetails)}`;
     
     const createNewUser = async (newUser) => {
   
+    let token = `${(JSON.parse(localStorage.getItem('TeamworkDB')).tokenDetails)}`;
+
      let createUserOptions = { method: 'POST', body: JSON.stringify(newUser), headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } };
       try {
       const res = await fetch(createUserUrl, createUserOptions);
@@ -80,7 +81,24 @@ const getAllFeed = async () => {
       const res = await fetch(feedUrl, feedOptions);
   
       const json = await res.json();
-      console.log('json response', json);
+      // console.log('json response', json);
+      return json;
+    } catch (e) {
+      console.log("error response", e);
+    }
+  };
+
+const deletePost = async (postId) => {
+  
+  let token = `${(JSON.parse(localStorage.getItem('TeamworkDB')).tokenDetails)}`;
+
+  let deleteOptions = { method: 'DELETE', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } };
+  
+    try {
+      const res = await fetch(`${articleUrl}/${postId}`, deleteOptions);
+  
+      const json = await res.json();
+      console.log('json response', json, postId);
       return json;
     } catch (e) {
       console.log("error response", e);
@@ -88,5 +106,25 @@ const getAllFeed = async () => {
   };
 
 
-  export { createNewUser, signInUser, postArticle, postGIF, getAllFeed };
+const updatePost = async (articleToUpdate) => {
+  
+  let token = `${(JSON.parse(localStorage.getItem('TeamworkDB')).tokenDetails)}`;
+  let { title, article } = articleToUpdate;
+  // console.log(articleToUpdate);
+
+  let updateOptions = { method: 'PATCH', body: JSON.stringify({ title, article }), headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } };
+  
+    try {
+      const res = await fetch(`${articleUrl}/${articleToUpdate.id}`, updateOptions);
+  
+      const json = await res.json();
+      console.log('json response', json, articleToUpdate.id);
+      return json;
+    } catch (e) {
+      console.log("error response", e);
+    }
+  };
+
+
+  export { createNewUser, signInUser, postArticle, postGIF, getAllFeed, deletePost, updatePost };
   
