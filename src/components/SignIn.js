@@ -47,7 +47,7 @@ class SignIn extends Component {
 
   render() {
     let {
-      signedIn, error, errorMessage, onClick, user,
+      signedIn, errorMessage, onClick, user,
     } = this.props;
     if (signedIn) {
       console.log('SignIn: signedin is true');
@@ -76,7 +76,8 @@ class SignIn extends Component {
             </span>
           ) : <span />}
         </div>
-        <div>{error && error.includes('undefined') ? <span>Login failed </span> : <span />}</div>
+        {/* <div>{error && error.includes('undefined') ? <span>Login failed </span> : <span />}</div> */}
+        {/* <div>{ errorMessage }</div> */}
 
         <form className="form-selector" onSubmit={this.handleSubmit}>
           <input type="text" name="email" placeholder="Put in Email" onChange={this.handleChange} />

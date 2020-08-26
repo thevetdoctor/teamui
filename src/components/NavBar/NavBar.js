@@ -1,43 +1,33 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import {
-  FaUserCircle, FaUserPlus, FaEdit, FaComments, FaTelegramPlane, FaArrowCircleRight,
-} from 'react-icons/fa';
-import { HomeButton, PostsButton } from './NavBarButtons';
-import SignOut from './SignOut';
+import { HomeButton, 
+  PostsButton,
+  CreateUserButton,
+  CreateArticleButton, 
+  CreateGIFButton, 
+  ProfilePageButton, 
+  SignInButton, 
+  SignOutButton } from './NavBarButtons';
 
 const NavBar = (props) => {
-  const { signedIn, isAdmin, signOut } = props;
+  const { signedIn, signOut } = props;
   return (
     <div className="">
       {signedIn
         ? (
           <div className="nav">
-            {isAdmin
-              ? (
-                <span>
-                  <Link to="/createuser" className="links">
-                    <FaUserPlus />
-                  </Link>
-                </span>
-              )
-              : <span />}
-            <Link to="/feed" className="links"><FaComments /></Link>
-            <HomeButton />
-            <PostsButton />
-            <Link to="/createarticle" className="links"><FaEdit /></Link>
-            <Link to="/postgif" className="links"><FaTelegramPlane /></Link>
-            <Link to="/profile" className="links"><FaUserCircle /></Link>
-            <Link to="/"><SignOut onClick={signOut} /></Link>
+            <HomeButton link='/' className='links' />
+            <PostsButton link='/feed' className='links' />
+            <CreateArticleButton link='/createarticle' className='links' />
+            <CreateGIFButton link='/postgif' className='links' />
+            <ProfilePageButton link='/profile' className='links' />
+            <SignOutButton link='/' className='links' signOut={signOut} />
           </div>
         )
         : (
           <div className="nav">
-            <Link to="/feed" className="links"><FaComments /></Link>
-            <Link to="/signin" className="links">
-              <FaArrowCircleRight />
-              {' '}
-            </Link>
+            <PostsButton link='/feed' className='links' />
+            <CreateUserButton link='/createuser' className='links' />
+            <SignInButton link='/signin' className='links' />
           </div>
         )}
     </div>
