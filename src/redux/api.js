@@ -1,130 +1,214 @@
-    let apiUrl = 'http://localhost:8000/api/v1';
-    let createUserUrl = `${apiUrl}/auth/create-user`;
-    let signInUrl = `${apiUrl}/auth/signin`;
-    let articleUrl = `${apiUrl}/articles`;
-    let gifUrl = `${apiUrl}/gifs`;
-    let feedUrl = `${apiUrl}/feed`;
-    
-    const createNewUser = async (newUser) => {
-  
-    let token = `${(JSON.parse(localStorage.getItem('TeamworkDB')).tokenDetails)}`;
+/* eslint-disable no-console */
+const getUrl = () => {
+  if (window.location.host.indexOf('localhost') >= 0) {
+    return 'http://localhost:4000/api/v1';
+  }
+  return 'https://obateamwork.herokuapp.com/api/v1';
+};
 
-     let createUserOptions = { method: 'POST', body: JSON.stringify(newUser), headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } };
-      try {
-      const res = await fetch(createUserUrl, createUserOptions);
-  
-      const json = await res.json();
-      // console.log('json response', json);
-      return json;
-    } catch (e) {
-      console.log("error response", e);
-    }
-  };
+const apiUrl = getUrl();
+console.log(apiUrl);
 
+const createUserUrl = `${apiUrl}/auth/create-user`;
+const signInUrl = `${apiUrl}/auth/signin`;
+const getUserDetailsUrl = `${apiUrl}/auth/getuser`;
+const articleUrl = `${apiUrl}/articles`;
+const gifUrl = `${apiUrl}/gifs`;
+const feedUrl = `${apiUrl}/feed`;
+
+const token = JSON.parse(sessionStorage.getItem('TeamworkDB')) ? JSON.parse(sessionStorage.getItem('TeamworkDB')).tokenDetails : '';
+const isAdmin = JSON.parse(sessionStorage.getItem('TeamworkDB')) ? JSON.parse(sessionStorage.getItem('TeamworkDB')).tokenDetails : '';
+
+const createNewUser = async (newUser) => {
+  const createUserOptions = { method: 'POST', body: JSON.stringify(newUser), headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } };
+  let res;
+  try {
+      res = await fetch(createUserUrl, createUserOptions);
+
+    const json = await res.json();
+    console.log('json response', json);
+    return json;
+  } catch (e) {
+    console.log('error response', e);
+  }
+  return res;
+};
 
 const signInUser = async (registeredUser) => {
-  
-  let signInOptions = { method: 'POST', body: JSON.stringify(registeredUser), headers: { 'Content-Type': 'application/json' } };
-  
-    try {
-      const res = await fetch(signInUrl, signInOptions);
-  
-      const json = await res.json();
-      // console.log('json response', json);
-      return json;
-    } catch (e) {
-      console.log("error response", e);
-    }
-  };
+  const signInOptions = { method: 'POST', body: JSON.stringify(registeredUser), headers: { 'Content-Type': 'application/json' } };
+
+  let res;
+  try {
+      res = await fetch(signInUrl, signInOptions);
+
+    const json = await res.json();
+    console.log('json response', json);
+    return json;
+  } catch (e) {
+    console.log('error response', e);
+  }
+  return res;
+};
 
 const postArticle = async (article) => {
-  
-  let token = `${(JSON.parse(localStorage.getItem('TeamworkDB')).tokenDetails)}`;
+  const articleOptions = { method: 'POST', body: JSON.stringify(article), headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } };
 
-  let articleOptions = { method: 'POST', body: JSON.stringify(article), headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } };
-  
-    try {
-      const res = await fetch(articleUrl, articleOptions);
-  
-      const json = await res.json();
-      console.log('json response', json);
-      return json;
-    } catch (e) {
-      console.log("error response", e);
-    }
-  };
+  let res;
+  try {
+      res = await fetch(articleUrl, articleOptions);
+
+    const json = await res.json();
+    console.log('json response', json);
+    return json;
+  } catch (e) {
+    console.log('error response', e);
+  }
+  return res;
+};
 
 const postGIF = async (gifpost) => {
-  
-  let token = `${(JSON.parse(localStorage.getItem('TeamworkDB')).tokenDetails)}`;
+  const gifOptions = { method: 'POST', body: JSON.stringify(gifpost), headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } };
 
-  let gifOptions = { method: 'POST', body: JSON.stringify(gifpost), headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } };
-  
-    try {
-      const res = await fetch(gifUrl, gifOptions);
-  
-      const json = await res.json();
-      console.log('json response', json);
-      return json;
-    } catch (e) {
-      console.log("error response", e);
-    }
-  };
+  let res;
+  try {
+    res = await fetch(gifUrl, gifOptions);
+
+    const json = await res.json();
+    console.log('json response', json);
+    return json;
+  } catch (e) {
+    console.log('error response', e);
+  }
+  return res;
+};
 
 const getAllFeed = async () => {
-  
-  let token = `${(JSON.parse(localStorage.getItem('TeamworkDB')).tokenDetails)}`;
+  const feedOptions = { method: 'GET', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } };
 
-  let feedOptions = { method: 'GET', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } };
+  let res;
+  try {
+      res = await fetch(feedUrl, feedOptions);
+
+    const json = await res.json();
+    console.log('json response', json);
+    return json;
+  } catch (e) {
+    console.log('error response', e);
+  }
+  return res;
+};
+
+const getUserDetails = async (userEmail) => {
+  const userDetailsOptions = { method: 'GET', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } };
+  const detailsUrl = `${getUserDetailsUrl}?email=${userEmail}`;
   
-    try {
-      const res = await fetch(feedUrl, feedOptions);
-  
-      const json = await res.json();
-      // console.log('json response', json);
-      return json;
-    } catch (e) {
-      console.log("error response", e);
+  let res;
+  try {
+    res = await fetch(detailsUrl, userDetailsOptions);
+
+    const json = await res.json();
+    console.log('json response', json, detailsUrl, userDetailsOptions);
+    return json;
+  } catch (e) {
+    console.log('error response', e);
+  }
+  return res;
+};
+
+const deletePost = async (post) => {
+  const { id, authorId, type } = post;
+  const entityId = id;
+
+  const deleteOptions = { method: 'DELETE', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } };
+  const deleteOptionsAdmin = { method: 'DELETE', body: JSON.stringify({ entityId, authorId, type }), headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } };
+
+  const postUrl = post.type.includes('article') ? `${articleUrl}` : `${gifUrl}`;
+  console.log(postUrl, post);
+
+  let res;
+  try {
+    if (isAdmin) {
+      res = await fetch(`${postUrl}/${post.id}`, deleteOptions);
+      console.log('postUrl: ', postUrl);
+    } else {
+      res = await fetch(feedUrl, deleteOptionsAdmin);
+      console.log('feedUrl:', feedUrl);
     }
-  };
+    const json = await res.json();
+    console.log('json response', json, post.title, post.id);
+    return json;
+  } catch (e) {
+    console.log('error response', e);
+  }
+  return res;
+};
 
-const deletePost = async (postId) => {
-  
-  let token = `${(JSON.parse(localStorage.getItem('TeamworkDB')).tokenDetails)}`;
+const flagPost = async (post) => {
+  const { id, authorId, type } = post;
+  const entityId = id;
 
-  let deleteOptions = { method: 'DELETE', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } };
+  const flagOptions = { method: 'PATCH', body: JSON.stringify({ entityId, authorId, type }), headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } };
+  console.log(flagOptions, post);
   
-    try {
-      const res = await fetch(`${articleUrl}/${postId}`, deleteOptions);
-  
-      const json = await res.json();
-      console.log('json response', json, postId);
-      return json;
-    } catch (e) {
-      console.log("error response", e);
-    }
-  };
+  let res;
+  try {
+      res = await fetch(`${feedUrl}/flag`, flagOptions);
 
+    const json = await res.json();
+    console.log('json response', json, post.title, post.id);
+    return json;
+  } catch (e) {
+    console.log('error response', e);
+  }
+  return res;
+};
+
+const likePost = async (post) => {
+  const { id, authorId, type } = post;
+  const entityId = id;
+
+  const likeOptions = { method: 'PATCH', body: JSON.stringify({ entityId, authorId, type }), headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } };
+  console.log(likeOptions, post);
+  let res;
+  try {
+      res = await fetch(`${feedUrl}/like`, likeOptions);
+
+    const json = await res.json();
+    console.log('json response', json, post.title, post.id);
+    return json;
+  } catch (e) {
+    console.log('error response', e);
+  }
+  return res;
+};
 
 const updatePost = async (articleToUpdate) => {
-  
-  let token = `${(JSON.parse(localStorage.getItem('TeamworkDB')).tokenDetails)}`;
-  let { title, article } = articleToUpdate;
-  // console.log(articleToUpdate);
+  const { title, article } = articleToUpdate;
 
-  let updateOptions = { method: 'PATCH', body: JSON.stringify({ title, article }), headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } };
-  
-    try {
-      const res = await fetch(`${articleUrl}/${articleToUpdate.id}`, updateOptions);
-  
-      const json = await res.json();
-      console.log('json response', json, articleToUpdate.id);
-      return json;
-    } catch (e) {
-      console.log("error response", e);
-    }
-  };
+  const updateOptions = { method: 'PATCH', body: JSON.stringify({ title, article }), headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } };
+ 
+  let res;
+  try {
+    res = await fetch(`${articleUrl}/${articleToUpdate.id}`, updateOptions);
 
+    const json = await res.json();
+    console.log('json response', json, articleToUpdate.id);
+    return json;
+  } catch (e) {
+    console.log('error response', e);
+  }
+  return res;
+};
 
-  export { createNewUser, signInUser, postArticle, postGIF, getAllFeed, deletePost, updatePost };
-  
+export {
+  createNewUser,
+  signInUser,
+  postArticle,
+  postGIF,
+  getAllFeed,
+  deletePost,
+  flagPost,
+  likePost,
+  updatePost,
+  getUserDetails,
+};

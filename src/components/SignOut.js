@@ -1,13 +1,11 @@
 import React from 'react';
+import { FaPowerOff } from 'react-icons/fa';
 import '../css/App.css';
 
-
-const SignOut = (props) => {
-
-        return (
-            // <input type='button' name='signout' value='Sign Out' onClick={props.onClick} />
-            <span className='links' onClick={props.onClick}> Sign Out </span>
-        );
-}
+const SignOut = (props) => (
+                            <span className="links" onClick={props.onClick}>
+                              <FaPowerOff />
+                            </span>
+                          );
 
 export default SignOut;
