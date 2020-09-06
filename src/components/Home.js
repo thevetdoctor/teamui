@@ -18,7 +18,7 @@ const Home = (props) => {
 
     return (
       <div className="">
-        <NavBar signedIn={signedIn} signOut={signOut} />
+        <NavBar posts article gif profile signin signout createuser signedIn={signedIn} signOut={signOut} />
           <div className='body'>
             <div>
               <img src="https://res.cloudinary.com/thevetdoctor/image/upload/v1574600900/teamwork/Penguins.jpg" alt="Team Bond" />
@@ -26,7 +26,7 @@ const Home = (props) => {
             <div>
               <h3>
                 Welcome to Teamwork
-                {user.firstname ? `, ${isAdmin ? 'Admin' : user.firstname}` : ', Guest'}
+                {signedIn ? `, ${isAdmin ? 'Admin' : user.firstname}` : ', Guest'}
               </h3>
               <h5>... where teams actually WORK!</h5>
             </div>

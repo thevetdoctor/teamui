@@ -1,104 +1,78 @@
 /* eslint-disable no-console */
-import React, { Component } from 'react';
-import { Link, Redirect } from 'react-router-dom';
-import {
-  FaUniversity, FaComments, FaEdit, FaTelegramPlane,
-} from 'react-icons/fa';
-import SignOut from './SignOut';
-import '../css/App.css';
+/* eslint-disable no-unused-vars */
+import React, { useState } from 'react';
+import { Redirect } from 'react-router-dom';
+import { useForm } from "react-hook-form";
+import NavBar from './NavBar/NavBar';
+import { InputStyle } from '../components/widgets/Input';
+import { SubmitButton } from '../components/widgets/Buttons';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-// const errorMessage = useSelector(state => state.errorMessage);
 
-const Input = (props) => (
+const Input = React.forwardRef((props, ref) => {
+  return (
   <div>
     {props.editable
       ? (
+        <InputStyle className={props.className}>
         <input
-          type={props.type}
+          ref={ref}
+          id={props.name}
           name={props.name}
+          type={props.type}
           placeholder={props.placeholder}
-          onChange={props.onChange}
+          required={props.required && true}
           readOnly="readonly"
         />
+      </InputStyle>
       ) : (
+        <InputStyle className={props.className}>
         <input
-          type={props.type}
+          ref={ref}
+          id={props.name}
           name={props.name}
+          type={props.type}
           placeholder={props.placeholder}
-          onChange={props.onChange}
+          required={props.required && true}
         />
+      </InputStyle>
       )}
   </div>
+    )
+   });
 
-);
+const handleToast = (msg) => toast(msg);
 
-class ProfilePage extends Component {
-  constructor(props) {
-    super(props);
+const ProfilePage = (props) => {
 
-    this.state = {
-      formInput: {
-        firstName: '',
-        lastName: '',
-        jobRole: '',
-        department: '',
-        address: '',
-      },
-      editable: false,
-    };
+  const { register, handleSubmit, errors } = useForm({ validateCriteriaMode: "all" });
+  const { signedIn, signOut, user, isAdmin, onClick } = props;
+  const [ editable, setEditable ] =  useState(false);
+  const [ loading, setLoading ] =  useState(false);
+  const [ submitted, setSubmitted ] =  useState(false);
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.onEdit = this.onEdit.bind(this);
-  }
-
-  onEdit(e) {
+  const onEdit = (e) => {
     e.preventDefault();
-    console.log('editable', this.state.editable);
-    this.setState((prev) => ({ editable: !this.state.editable }));
+    setEditable(state => !state);
   }
 
-  handleSubmit(e) {
-    e.preventDefault();
-    // console.log(this.state);
-    const inputClass = e.target.children[9].classList;
-    console.log(inputClass.toggle('inactive'));
+  const onSubmit = (data) => {
+    // e.preventDefault();
+    // // console.log(this.state);
+    // const inputClass = e.target.children[9].classList;
+    // console.log(inputClass.toggle('inactive'));
+    console.log(data);
+    setLoading(true);
+    setSubmitted(true);
+    onClick(data);
+    handleToast('sending');
+    let timer = setTimeout(() => {
+      setLoading(false);
+    }, 1000);     
+    clearTimeout(timer);
   }
 
-  handleChange({ target }) {
-    const { name } = target;
-    const val = target.value;
-    const keyArray = ['firstName', 'lastName', 'email', 'password', 'gender', 'jobRole', 'department', 'address'];
-    if (keyArray.indexOf(name) >= 0) {
-      this.setState((prev) => ({ [name]: '' }));
-    }
-    // console.log('name =>', name, ': value =>', val);
-
-    if (name === 'undefined' || name === undefined) {
-      console.log('name is undefined', 'target =>', target.parentNode, 'val =>', val);
-      return;
-    }
-    if (val === '' || val.trim() === '') {
-      target.classList.add('empty');
-      console.log(`${name} is not supplied`);
-      return;
-    }
-    if (name === 'age') {
-      if (isNaN(val)) {
-        target.classList.add('empty');
-        console.log(`${name} should be a number!`);
-        // return;
-      }
-    }
-
-    this.setState((prev) => ({ [name]: val }));
-  }
-
-  render() {
-    const {
-      signedIn, signOut, user, isAdmin, onClick,
-    } = this.props;
-    const { editable } = this.state;
 
     if (!signedIn) {
       console.log('signedin is true');
@@ -106,36 +80,100 @@ class ProfilePage extends Component {
     }
     return (
       <div className="">
-        <div className="nav">
-          <Link to="/" className="links"><FaUniversity /></Link>
-          <Link to="/feed" className="links"><FaComments /></Link>
-          <Link to="/createarticle" className="links"><FaEdit /></Link>
-          <Link to="/postgif" className="links"><FaTelegramPlane /></Link>
-          {' '}
-          <Link to="/">
-            <SignOut onClick={signOut} />
-            {' '}
-          </Link>
-        </div>
+        <NavBar home posts article gif signin signout signedIn={signedIn} signOut={signOut} />
         <h3>
           Welcome to your page,
           {isAdmin ? 'Admin' : user.firstname}
         </h3>
 
-        <form className="form-selector">
-          <Input type="text" name="firstName" placeholder={user.firstname} onChange={this.handleChange} editable={!editable} />
-          <Input type="text" name="lastName" placeholder={user.lastname} onChange={this.handleChange} editable={!editable} />
-          <Input type="text" name="jobRole" placeholder={user.jobrole} onChange={this.handleChange} editable={!editable} />
-          <Input type="text" name="department" placeholder={user.department} onChange={this.handleChange} editable={!editable} />
-          <Input type="text" name="address" placeholder={user.address} onChange={this.handleChange} editable={!editable} />
+        <form className="form-selector" onSubmit={handleSubmit(onSubmit)}>
+        <Input
+            className="w-full mb-3"
+            placeholder={user.firstname}
+            type="text"
+            name="firstName"
+            ref={register({
+              // required: "firstname required",
+              minLength: {
+                value: 3,
+              }
+            })}
+            editable
+            value={user.firstname}
+          />
+          {errors.firstName && <p className="text-xs text-red-500 my-2">{errors.firstName.message}</p>}
+        <Input
+            className="w-full mb-3"
+            placeholder={user.lastname}
+            type="text"
+            name="lastName"
+            ref={register({
+              // required: "lastname required",
+              minLength: {
+                value: 3,
+              }
+            })}
+            editable
+          />
+          {errors.lastName && <p className="text-xs text-red-500 my-2">{errors.lastName.message}</p>}
+        <Input
+            className="w-full mb-3"
+            placeholder={user.jobrole}
+            type="text"
+            name="jobrole"
+            ref={register({
+              // required: "jobrole required",
+              minLength: {
+                value: 3,
+              }
+            })}
+            editable
+          />
+          {errors.jobrole && <p className="text-xs text-red-500 my-2">{errors.jobrole.message}</p>}
+        <Input
+            className="w-full mb-3"
+            placeholder={user.department}
+            type="text"
+            name="department"
+            ref={register({
+              // required: "department required",
+              minLength: {
+                value: 3,
+              }
+            })}
+            editable
+          />
+          {errors.department && <p className="text-xs text-red-500 my-2">{errors.department.message}</p>}
+        <Input
+            className="w-full mb-3"
+            placeholder={user.address}
+            type="text"
+            name="address"
+            ref={register({
+              // required: "address required",
+              minLength: {
+                value: 3,
+              }
+            })}
+            editable
+          />
+          {errors.address && <p className="text-xs text-red-500 my-2">{errors.address.message}</p>}
           <br />
-          {!editable && <input className="submit-inactive" type="submit" name="edit" value="Edit Profile" onClick={this.onEdit} />}
-          {editable && <input style={{ backgroundColor: 'red' }} type="submit" name="cancel" value="Cancel" onClick={this.onEdit} />}
-          {editable && <input className="submit-inactive" type="submit" name="update" value="Update" onClick={() => onClick(this.state.formInput)} />}
+          {!editable &&
+          <SubmitButton type="submit" className="w-full mt-6 submit-inactive" onClick={onEdit}>
+           Edit Profile
+          </SubmitButton>}
+          {editable &&
+          <SubmitButton type="submit" className="w-full mt-6 submit-inactive" style={{ backgroundColor: 'red' }} onClick={onEdit}>
+            Cancel
+          </SubmitButton>}
+          {editable &&
+          <SubmitButton type="submit" className="w-full mt-6">
+           Update
+          </SubmitButton>}
         </form>
       </div>
     );
-  }
 }
 
 export default ProfilePage;

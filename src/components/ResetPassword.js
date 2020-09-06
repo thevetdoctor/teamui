@@ -1,12 +1,12 @@
 /* eslint-disable no-console */
 /* eslint-disable no-useless-escape */
 import React, { useState } from 'react';
-import { Link, Redirect } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import NavBar from './NavBar/NavBar';
 import Input from '../components/widgets/Input';
 import TextSmall from '../components/widgets/Text';
-import { SubmitButton, LoaderContainer } from '../components/widgets/Buttons';
+import AlertCardStyle from '../components/widgets/Alert';
+import { LinkButton, SubmitButton, LoaderContainer } from '../components/widgets/Buttons';
 import Footer from './Footer';
 import BeatLoader from "react-spinners/BeatLoader";
 import { toast } from 'react-toastify';
@@ -14,40 +14,28 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const handleToast = (msg) => toast(msg);
 
-const SignIn = (props) => {
+const ResetPassword = (props) => {
  
-    let { signedIn, signOut, errorMessage, onClick, user } = props;
+    let { signedIn, signOut, errorMessage, onClick } = props;
     const { register, handleSubmit, errors } = useForm({ validateCriteriaMode: "all" });
     const [ loading, setLoading ] =  useState(false);
-    // const [ submitted, setSubmitted ] =  useState(false);
+    const [ submitted, setSubmitted ] =  useState(false);
 
     const onSubmit = (data) => {
       console.log(data);
       setLoading(true);
-      // setSubmitted(true);
+      setSubmitted(true);
       onClick(data);
       handleToast('sending');
-      let timer = setTimeout(() => {
+      setTimeout(() => {
         setLoading(false);
-      }, 1000);     
-      clearTimeout(timer); 
+      }, 1000);      
     }
-
-    if (signedIn) {
-      console.log('SignIn: signedin is true');
-      return <Redirect to="/" />;
-    }
-    if (errorMessage.includes('undefined')) {
-      console.log('Back to sign in');
-      return <Redirect to="/signin" />;
-    }
-    if (errorMessage.includes('credentials')) errorMessage = 'Error found!';
-    if (!signedIn && (user !== 'Guest')) user = 'Guest';
 
     return (
       <div className="">
         <NavBar home posts article gif profile signout createuser signedIn={signedIn} signOut={signOut} />
-        <h3>Log In</h3>
+        <h3>Password Reset || Recover Password</h3>
 
         <div>
           {errorMessage ? (
@@ -60,8 +48,7 @@ const SignIn = (props) => {
         <form className="form-selector" onSubmit={handleSubmit(onSubmit)}>
           <Input
             className="w-full mb-3"
-            placeholder="Email"
-            type="text"
+            type="email"
             name="email"
             ref={register({
               required: "Please provide registered email",
@@ -70,28 +57,9 @@ const SignIn = (props) => {
                 message: "Email not valid"
               }
             })}
+            placeholder="example@email.com"
           />
           {errors.email && <p className="text-xs text-red-500 my-2">{errors.email.message}</p>}
-          <Input
-            className="w-full mb-3"
-            placeholder="Password"
-            type="password"
-            name="password"
-            ref={register({
-              required: "Please enter authorized password",
-              minLength: {
-                value: 5,
-                message: "password should be at least 8 characters"
-              }
-            })}
-          />
-          {errors.password && <p className="text-xs text-red-500 my-2">{errors.password.message}</p>}
-
-          <Link to="/resetpassword">
-              <TextSmall className="mt-4" color="#43A047">
-                Forgot password?
-              </TextSmall>
-          </Link>
 
           {loading ?
           <LoaderContainer>
@@ -102,13 +70,30 @@ const SignIn = (props) => {
               />
           </LoaderContainer>
           :<SubmitButton type="submit" className="w-full mt-6">
-           Sign In
+           Recover password
           </SubmitButton>}
         </form>
 
+        {submitted && (
+          <div
+            className="h-screen w-screen fixed top-0 left-0 z-40 flex justify-center items-center pb-16"
+            style={{ backgroundColor: "#AFDEB199" }}
+          >
+            <AlertCardStyle className="w-10/12 bg-white">
+              {/* <img src="/images/success.svg" alt="" className="mx-auto mb-12" /> */}
+              <TextSmall className="text-center mb-6" style={{ color: "#43A047" }}>
+               {signedIn ? <span> Article posted, write another article?</span> : errorMessage}
+              </TextSmall>
+
+              <LinkButton link="/feed" className="w-10/12 mx-auto">
+                Back to Posts
+              </LinkButton>
+            </AlertCardStyle>
+            </div>
+        )}
         <Footer />
       </div>
     );
 }
 
-export default SignIn;
+export default ResetPassword;

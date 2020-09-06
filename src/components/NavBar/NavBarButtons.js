@@ -4,7 +4,7 @@ import {
   FaUniversity, 
   FaComments, 
   FaEdit, 
-  FaTelegramPlane, 
+  FaCamera, 
   FaUserCircle, 
   FaArrowCircleRight, 
   FaPowerOff,
@@ -13,11 +13,11 @@ import {
 import '../../css/App.css';
 
 const HomeButton = (props) => (
-  <Link to={props.link} className={props.className}><FaUniversity /></Link>
+  <Link to={props.link} className={props.className}><FaUniversity /><span>Home</span></Link>
 );
 
 const PostsButton = (props) => (
-  <Link to={props.link} className={props.className}><FaComments /></Link>
+  <Link to={props.link} className={props.className}><FaComments />Posts</Link>
 );
 
 const CreateUserButton = (props) => (
@@ -29,7 +29,7 @@ const CreateArticleButton = (props) => (
 );
 
 const CreateGIFButton = (props) => (
-  <Link to={props.link} className={props.className}><FaTelegramPlane /></Link>
+  <Link to={props.link} className={props.className}><FaCamera /></Link>
 );
 
 const ProfilePageButton = (props) => (
@@ -41,8 +41,8 @@ const SignInButton = (props) => (
 );
 
 const SignOutButton = (props) => (
-  <Link to={props.link} className={props.className} onClick={() => props.SignOut}><FaPowerOff /></Link>
-);
+  <span className="links" onClick={props.onClick}><FaPowerOff /></span>
+); 
 
 export {
   HomeButton, 

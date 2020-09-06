@@ -33,7 +33,7 @@ function* signIn({ type = 'SIGNIN_USER', user }) {
 
     yield put({ type: 'SIGNIN_SUCCESS', signInData });
   } catch (e) {
-    // console.log(e);
+    console.log(e);
     yield put({ type: 'SIGNIN_FAILURE', signInError: e.message });
   }
 }

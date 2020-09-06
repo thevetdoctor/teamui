@@ -44,11 +44,18 @@ const teamReducer = (state = initialState, actions) => {
       let newUserState;
       if (newUserData.status === 'error') {
         newUserState = {
-          ...state, ...state, newUser: false, errorMessage: newUserData.error,
+          ...state, signedIn: false, newUser: false, errorMessage: newUserData.error, 
         };
       } else {
+        const { token, user } = newUserData.data;
+
         newUserState = {
-          ...state, ...state, newUser: true, signedIn: true,
+          ...state, 
+          newUser: true, 
+          signedIn: true,   
+          tokenDetails: token,
+          isAdmin: newUserData.data.isAdmin,
+          user,
         };
       }
       sessionStorage.setItem('TeamworkDB', JSON.stringify(newUserState));
@@ -66,20 +73,26 @@ const teamReducer = (state = initialState, actions) => {
 
       console.log('Sign In Response');
       const { signInData } = actions;
-      const { isAdmin, token, user } = signInData.data;
-      if (isAdmin === null) signInData.data.isAdmin = false;
+      let signedInState;
+      if (signInData.status === 'error') {
+        signedInState = {
+          ...state,
+          signedIn: false,
+          errorMessage: signInData.error
+        };
+      } else {
+        const { isAdmin, token, user } = signInData.data;
+        if (isAdmin === null) signInData.data.isAdmin = false;
+        console.log(signInData);
 
-      console.log(signInData);
-
-      const signedInState = {
-        ...state,
-        ...state,
-        signedIn: true,
-        tokenDetails: token,
-        isAdmin: signInData.data.isAdmin,
-        user,
-      };
-      // sessionStorage.setItem('TeamworkDB', JSON.stringify(signedInState));
+        signedInState = {
+          ...state,
+          signedIn: true,
+          tokenDetails: token,
+          isAdmin: signInData.data.isAdmin,
+          user,
+        };
+      }
       sessionStorage.setItem('TeamworkDB', JSON.stringify(signedInState));
 
       return signedInState;
@@ -168,7 +181,7 @@ const teamReducer = (state = initialState, actions) => {
           ...state, ...state, gifPosted: false, errorMessage: newGIFData.error,
         };
       } else {
-        newGIFState = { ...state, ...state, gifPosted: true };
+        newGIFState = { ...state, gifPosted: true };
       }
       console.log('new gif state', newGIFState);
       sessionStorage.setItem('TeamworkDB', JSON.stringify(newGIFState));

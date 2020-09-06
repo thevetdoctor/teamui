@@ -14,7 +14,7 @@ class PostGIF extends Component {
     this.state = {
       title: '',
       // imageUrl: 'C:\\Users\\ACER\\Pictures\\teamwork\\koala.jpg',
-      imageUrl: 'C://Users//ACER//Pictures//teamwork//koala.jpg',
+      imageUrl: '',
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -31,7 +31,7 @@ class PostGIF extends Component {
   handleChange({ target }) {
     const { name } = target;
     const val = target.value;
-    const keyArray = ['email', 'password'];
+    const keyArray = ['title', 'imageUrl'];
     if (keyArray.indexOf(name) >= 0) {
       this.setState((prev) => ({ [name]: '' }));
     }
@@ -91,9 +91,9 @@ class PostGIF extends Component {
           ? <div><h3>Image uploaded, post another image? </h3></div>
           : <div><h3>Post GIF images to your team!</h3></div>}
 
-        <form className="form-selector" onSubmit={this.handleSubmit}>
+        <form className="form-selector" onSubmit={this.handleSubmit} action='' method="POST" encType="multipart/form-data">
           <input type="text" name="title" placeholder="GIF Title" onChange={this.handleChange} />
-          <input type="file" name="imageUrl" placeholder="Upload GIF" onChange={this.handleChange} />
+          <input type="file" name="imageUrl" placeholder="Upload GIF" onChange={this.handleChange} accept="image/*"  />
           <input className="submit-inactive" type="submit" name="post-gif" value="Post GIF" onClick={() => onClick(this.state)} />
         </form>
       </div>

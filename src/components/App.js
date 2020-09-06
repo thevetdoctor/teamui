@@ -8,6 +8,7 @@ import CreateUser from './CreateUser';
 import SignIn from './SignIn';
 import NotFound from './NotFound';
 import ProfilePage from './ProfilePage';
+import ResetPassword from './ResetPassword';
 import UserPage from './UserPage';
 import CreateArticle from './CreateArticle';
 import PostGIF from './PostGIF';
@@ -20,7 +21,7 @@ const App = () => {
     loading, signedIn, user, isAdmin, articlePosted, gifPosted, feed, userDetails,
   } = useSelector((state) => state);
   let { errorMessage } = useSelector((state) => state);
-  if(errorMessage.includes('undefined')) errorMessage = 'Connection error';
+  if((typeof errorMessage === 'string') && errorMessage.includes('undefined')) errorMessage = 'Connection error';
   console.log(state, errorMessage);
 
   const handleCreateUser = (formValues) => {
@@ -302,6 +303,7 @@ const App = () => {
       <Route path="/createuser" render={(props) => <CreateUser {...props} loading={loading} signedIn={signedIn} user={user} errorMessage={errorMessage} onClick={handleCreateUser} signOut={handleSignOut} />} />
       <Route path="/signin" render={(props) => <SignIn {...props} signedIn={signedIn} errorMessage={errorMessage} onClick={handleSignIn} user={user} />} />
       <Route path="/profile" render={(props) => <ProfilePage {...props} signedIn={signedIn} user={user} onClick={handleSignIn} signOut={handleSignOut} />} />
+      <Route path="/resetpassword" render={(props) => <ResetPassword {...props} signedIn={signedIn} user={user} onClick={handleSignIn} signOut={handleSignOut} />} />
       <Route path="/userpage" render={(props) => <UserPage {...props} signedIn={signedIn} userDetails={userDetails} onClick={handleUserDetails} signOut={handleSignOut} />} />
       <Route path="/createarticle" render={(props) => <CreateArticle {...props} signedIn={signedIn} errorMessage={errorMessage} articlePosted={articlePosted} onClick={handleCreateArticle} signOut={handleSignOut} />} />
       <Route path="/postgif" render={(props) => <PostGIF {...props} signedIn={signedIn} errorMessage={errorMessage} gifPosted={gifPosted} onClick={handlePostGIF} signOut={handleSignOut} />} />

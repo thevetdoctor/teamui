@@ -32,7 +32,8 @@ import '../css/App.css';
 class Feed extends Component {
   constructor(props) {
     super(props);
-    this.state = { data: [...this.props.feed.data] };
+    // this.state = { data: [...this.props.feed.data.data.posts] };
+    this.state = { data: [] };
 
     this.clicked = this.clicked.bind(this);
     this.onEdit = this.onEdit.bind(this);
@@ -102,7 +103,7 @@ class Feed extends Component {
     this.props.onLoad();
     if (this.state.data.length < 1) {
       console.info(this.state);
-      this.setState({ data: [...this.props.feed.data] });
+      this.setState({ data: [] });
     }
   }
 
@@ -116,18 +117,29 @@ class Feed extends Component {
 
   render() {
     const {
-      errorMessage, feed, isAdmin, signedIn, signOut, user, onUpdate, onDelete, onFlag, onLike, getUserDetails, userDetails,
+      errorMessage, 
+      feed, 
+      isAdmin, 
+      signedIn, 
+      signOut, 
+      user, 
+      onUpdate, 
+      onDelete, 
+      onFlag, 
+      onLike, 
+      getUserDetails, 
+      userDetails,
     } = this.props;
     console.log(feed, userDetails);
     if (errorMessage === 'Error with credentials') {
-      console.log('errorMessage:Error is credentials');
+      console.log('Error with credentials');
       return <Redirect to="/signin" />;
     }
     if (!signedIn) {
       console.log('Auth expired');
       return <Redirect to="/signin" />;
     }
-      // notify();
+
     return (
       <div className="">
         <div className="nav">
@@ -169,15 +181,16 @@ class Feed extends Component {
         </div>
 
         <div>
-          {feed.data.length
+          {feed.data.data && feed.data.data.posts.length
             ? (
               <div>
-                {feed.data.map((item, index) => (
+                {feed.data.data.posts.map((item, index) => (
                   <div key={index} className="card">
                     <div className="author-tag">
                       <FaUserCircle />
                       <span onClick={() => getUserDetails(item.email)}>
                         {/* <Link to='/userpage' className='links'> */}
+                        {item.author}
                         {item.author ? `@${item.author}` : '@anonymous'}
                         {/* </Link> */}
                       </span>
@@ -222,12 +235,12 @@ class Feed extends Component {
                               {item.comments ? item.comments : ''}
                             </span>
                             <span className="btn" onClick={() => onLike(item)}>
-                              {item.liked ? <FaHeart color="red" /> : <FaHeart color="#fff" />}
+                              {item.liked ? <FaHeart color="red" /> : <FaHeart />}
                               {item.liked ? item.liked : ''}
                             </span>
                             <span className="btn" onClick={() => onFlag(item)}>
                               {item.flagged
-                                ? <FaAngry color="red" /> : <FaSmile color="#fff" />}
+                                ? <FaAngry color="red" /> : <FaSmile />}
                             </span>
                             <span>
                               {item.type && item.type.includes('gif')

@@ -17,7 +17,7 @@ const gifUrl = `${apiUrl}/gifs`;
 const feedUrl = `${apiUrl}/feed`;
 
 const token = JSON.parse(sessionStorage.getItem('TeamworkDB')) ? JSON.parse(sessionStorage.getItem('TeamworkDB')).tokenDetails : '';
-const isAdmin = JSON.parse(sessionStorage.getItem('TeamworkDB')) ? JSON.parse(sessionStorage.getItem('TeamworkDB')).tokenDetails : '';
+const isAdmin = JSON.parse(sessionStorage.getItem('TeamworkDB')) ? JSON.parse(sessionStorage.getItem('TeamworkDB')).isAdmin : '';
 
 const createNewUser = async (newUser) => {
   const createUserOptions = { method: 'POST', body: JSON.stringify(newUser), headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } };
